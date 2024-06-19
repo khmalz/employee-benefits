@@ -55,7 +55,7 @@
                 </a>
             </li> --}}
             <a class="{{ request()->routeIs('request') ? 'text-blue-500' : 'text-gray-900' }} group flex items-center rounded-lg p-2 hover:bg-gray-100"
-                href="">
+                href="{{ route('request') }}">
                 <svg class="h-5 w-5 flex-shrink-0 transition duration-75" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                     viewBox="0 0 24 24">
@@ -69,7 +69,7 @@
                 <span class="ms-3">Permintaan</span>
             </a>
             <a class="{{ request()->routeIs('benefit-history') ? 'text-blue-500' : 'text-gray-900' }} group flex items-center rounded-lg p-2 hover:bg-gray-100"
-                href="">
+                href="{{ route('benefit-history') }}">
                 <svg class="h-5 w-5 flex-shrink-0 transition duration-75" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                     viewBox="0 0 24 24">

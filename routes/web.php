@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HistoryBenefitController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RequestBenefitController;
@@ -9,6 +10,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/request-benefit', RequestBenefitController::class)->name('request');
+Route::get('/history-benefit', HistoryBenefitController::class)->name('benefit-history');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
