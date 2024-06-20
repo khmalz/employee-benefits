@@ -2,6 +2,78 @@
 
 @section('content')
     <div>
+        @if (false)
+            <div class="w-full rounded-lg bg-white p-5">
+                <h2 class="mb-3 text-xl font-semibold">Ganti Password</h2>
+
+                <form action="#" method="POST">
+                    @csrf
+
+                    <div class="mb-5">
+                        <label class="mb-2 block text-sm font-medium text-gray-900" for="old_password">Password Lama</label>
+                        <input
+                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
+                            id="old_password" name="old_password" type="password" placeholder="password" required>
+                        <div class="mb-4 mt-1.5 flex items-center">
+                            <input
+                                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-600 focus:ring-2 focus:ring-green-500"
+                                id="checkbox-old-password" type="checkbox"
+                                onclick="togglePasswordVisibility('old_password', this)">
+                            <label class="ms-1 text-sm font-medium text-gray-900 selection:normal-case"
+                                for="checkbox-old-password">Show
+                                Password</label>
+                        </div>
+                        @error('old_password')
+                            <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="mb-2 block text-sm font-medium text-gray-900" for="password">Password Baru</label>
+                        <input
+                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
+                            id="password" name="password" type="password" placeholder="password" required>
+                        <div class="mb-4 mt-1.5 flex items-center">
+                            <input
+                                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-600 focus:ring-2 focus:ring-green-500"
+                                id="checkbox-password" type="checkbox" onclick="togglePasswordVisibility('password', this)">
+                            <label class="ms-1 text-sm font-medium text-gray-900 selection:normal-case"
+                                for="checkbox-password">Show
+                                Password</label>
+                        </div>
+                        @error('password')
+                            <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="mb-2 block text-sm font-medium text-gray-900" for="password_confirmation">Konfirmasi
+                            Password</label>
+                        <input
+                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
+                            id="password_confirmation" name="password_confirmation" type="password" placeholder="password"
+                            required>
+                        <div class="mb-4 mt-1.5 flex items-center">
+                            <input
+                                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-600 focus:ring-2 focus:ring-green-500"
+                                id="checkbox-password-confirmation" type="checkbox"
+                                onclick="togglePasswordVisibility('password_confirmation', this)">
+                            <label class="ms-1 text-sm font-medium text-gray-900 selection:normal-case"
+                                for="checkbox-password-confirmation">Show
+                                Password</label>
+                        </div>
+                        @error('password_confirmation')
+                            <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <button
+                        class="rounded-lg bg-green-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
+                        type="submit">Save Changes</button>
+                </form>
+            </div>
+        @endif
+
         <div class="w-full rounded-lg bg-white p-5">
             <h2 class="mb-3 text-xl font-semibold">Permintaan Tunjangan</h2>
 
@@ -9,9 +81,10 @@
                 @csrf
 
                 <div class="mb-5">
-                    <label class="mb-2 block text-sm font-medium text-gray-900" for="besar_tunjangan">Besar Tunjangan</label>
+                    <label class="mb-2 block text-sm font-medium text-gray-900" for="besar_tunjangan">Besar
+                        Tunjangan</label>
                     <input
-                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
                         id="besar_tunjangan" name="besar_tunjangan" type="text" value="{{ old('besar_tunjangan') }}"
                         placeholder="1.000.000" required>
                     @error('besar_tunjangan')
@@ -22,7 +95,7 @@
                 <div class="mb-5">
                     <label class="mb-2 block text-sm font-medium text-gray-900" for="teacher">Pesan</label>
                     <textarea
-                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
                         id="pesan" rows="4" placeholder="Tulis pesan yang ingin disampaikan">{{ old('pesan') }}</textarea>
                     @error('pesan')
                         <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
@@ -90,6 +163,15 @@
         })
     </script>
     <script>
+        function togglePasswordVisibility(inputId, checkbox) {
+            const inputElement = document.getElementById(inputId);
+            if (checkbox.checked) {
+                inputElement.type = 'text';
+            } else {
+                inputElement.type = 'password';
+            }
+        }
+
         const dt = new DataTransfer();
 
         function deleteImagePre() {
