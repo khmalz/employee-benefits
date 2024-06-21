@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployeeControlller;
 use App\Http\Controllers\HistoryBenefitController;
 use App\Http\Controllers\TunjanganController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,7 @@ Route::get('/request-benefit', RequestBenefitController::class)->name('request')
 Route::get('/history-benefit', HistoryBenefitController::class)->name('benefit.history');
 
 Route::resource('benefit', TunjanganController::class);
+Route::resource('employee', EmployeeControlller::class);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

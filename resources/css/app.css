@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .datepicker-controls button.prev-btn,
+    .datepicker-controls button.next-btn,
+    .datepicker-controls button.view-switch {
+        @apply text-green-500 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-600 hover:text-green-900 dark:hover:text-green-500;
+    }
+
+    .datepicker-footer .button.today-btn {
+        @apply bg-green-700 dark:bg-green-600 hover:bg-green-800 dark:hover:bg-green-700 focus:ring-4 focus:ring-green-300;
+    }
+
+    .datepicker-footer .button.clear-btn {
+        @apply text-green-900 dark:text-green-400 bg-white dark:bg-gray-700 border border-green-300 dark:border-green-600 hover:bg-green-100 dark:hover:bg-green-600 focus:ring-4 focus:ring-green-300;
+    }
+
+    .datepicker-cell {
+        @apply hover:bg-green-100 dark:hover:bg-green-600 text-green-500 dark:text-green-400;
+    }
+
+    .datepicker-cell.selected {
+        @apply bg-green-700 text-white dark:bg-green-600;
+    }
+}
