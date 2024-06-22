@@ -2,12 +2,43 @@
 
 @section('content')
     <div>
-        @if (false)
+        @if (session()->has('fail'))
+            <div class="mb-4 flex items-center rounded-lg bg-red-50 p-4 text-red-800" id="alert-2" role="alert">
+                <svg class="h-4 w-4 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                    viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Info</span>
+                <div class="ms-3 text-sm font-medium">
+                    {{ session('fail') }}
+                </div>
+                <button
+                    class="-mx-1.5 -my-1.5 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-red-50 p-1.5 text-red-500 hover:bg-red-200 focus:ring-2 focus:ring-red-400"
+                    data-dismiss-target="#alert-2" type="button" aria-label="Close">
+                    <span class="sr-only">Close</span>
+                    <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                </button>
+            </div>
+        @endif
+
+        @if (session()->has('success'))
+            <div class="mb-4 rounded-lg bg-green-50 p-4 text-sm text-green-800" id="password_berhasil" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (\Illuminate\Support\Facades\Hash::check('password', auth()->user()->password))
             <div class="w-full rounded-lg bg-white p-5">
                 <h2 class="mb-3 text-xl font-semibold">Ganti Password</h2>
 
-                <form action="#" method="POST">
+                <form action="{{ route('password.change') }}" method="POST">
                     @csrf
+                    @method('PATCH')
 
                     <div class="mb-5">
                         <label class="mb-2 block text-sm font-medium text-gray-900" for="old_password">Password Lama</label>
@@ -72,78 +103,79 @@
                         type="submit">Save Changes</button>
                 </form>
             </div>
-        @endif
+        @else
+            <div class="w-full rounded-lg bg-white p-5">
+                <h2 class="mb-3 text-xl font-semibold">Permintaan Tunjangan</h2>
 
-        <div class="w-full rounded-lg bg-white p-5">
-            <h2 class="mb-3 text-xl font-semibold">Permintaan Tunjangan</h2>
+                <form action="#" enctype="multipart/form-data" method="POST">
+                    @csrf
 
-            <form action="#" enctype="multipart/form-data" method="POST">
-                @csrf
-
-                <div class="mb-5">
-                    <label class="mb-2 block text-sm font-medium text-gray-900" for="besar_tunjangan">Besar
-                        Tunjangan</label>
-                    <input
-                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
-                        id="besar_tunjangan" name="besar_tunjangan" type="text" value="{{ old('besar_tunjangan') }}"
-                        placeholder="1.000.000" required>
-                    @error('besar_tunjangan')
-                        <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="mb-5">
-                    <label class="mb-2 block text-sm font-medium text-gray-900" for="teacher">Pesan</label>
-                    <textarea
-                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
-                        id="pesan" rows="4" placeholder="Tulis pesan yang ingin disampaikan">{{ old('pesan') }}</textarea>
-                    @error('pesan')
-                        <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="mb-5">
-                    <div class="w-full lg:w-1/2">
-                        <label class="mb-2 block text-sm font-medium text-gray-900" for="dropzone-file">File
-                            Pendukung</label>
-                        <label
-                            class="flex h-52 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
-                            id="dropzone-label" for="dropzone-file">
-                            <div class="flex flex-col items-center justify-center pb-6 pt-5">
-                                <svg class="mb-4 h-8 w-8 text-gray-500" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                </svg>
-                                <p class="mb-2 text-sm text-gray-500" id="file-name"><span class="font-semibold">Click
-                                        to
-                                        upload</span> or drag and drop</p>
-                                <p class="text-xs text-gray-500">PNG|JPG|JPEG (MAX. 2 MB).</p>
-                            </div>
-                            <input class="hidden" id="dropzone-file" name="file" type="file"
-                                accept=".png,.jpg,.jpeg" />
-                        </label>
-                        @error('file')
+                    <div class="mb-5">
+                        <label class="mb-2 block text-sm font-medium text-gray-900" for="besar_tunjangan">Besar
+                            Tunjangan</label>
+                        <input
+                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
+                            id="besar_tunjangan" name="besar_tunjangan" type="text" value="{{ old('besar_tunjangan') }}"
+                            placeholder="1.000.000" required>
+                        @error('besar_tunjangan')
                             <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
                         @enderror
-                        <div id="image-container">
-                            @if (false)
-                                <div class="mt-2" id="image-pre">
-                                    <img class="h-60 w-full rounded-md border bg-slate-200/70 shadow-sm" src="#"
-                                        alt="preview-image">
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="mb-2 block text-sm font-medium text-gray-900" for="teacher">Pesan</label>
+                        <textarea
+                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
+                            id="pesan" rows="4" placeholder="Tulis pesan yang ingin disampaikan">{{ old('pesan') }}</textarea>
+                        @error('pesan')
+                            <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-5">
+                        <div class="w-full lg:w-1/2">
+                            <label class="mb-2 block text-sm font-medium text-gray-900" for="dropzone-file">File
+                                Pendukung</label>
+                            <label
+                                class="flex h-52 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
+                                id="dropzone-label" for="dropzone-file">
+                                <div class="flex flex-col items-center justify-center pb-6 pt-5">
+                                    <svg class="mb-4 h-8 w-8 text-gray-500" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500" id="file-name"><span
+                                            class="font-semibold">Click
+                                            to
+                                            upload</span> or drag and drop</p>
+                                    <p class="text-xs text-gray-500">PNG|JPG|JPEG (MAX. 2 MB).</p>
                                 </div>
-                            @endif
+                                <input class="hidden" id="dropzone-file" name="file" type="file"
+                                    accept=".png,.jpg,.jpeg" />
+                            </label>
+                            @error('file')
+                                <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
+                            @enderror
+                            <div id="image-container">
+                                @if (false)
+                                    <div class="mt-2" id="image-pre">
+                                        <img class="h-60 w-full rounded-md border bg-slate-200/70 shadow-sm"
+                                            src="#" alt="preview-image">
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <button
-                    class="rounded-lg bg-green-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
-                    type="submit">Kirim</button>
-            </form>
+                    <button
+                        class="rounded-lg bg-green-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
+                        type="submit">Kirim</button>
+                </form>
 
-        </div>
+            </div>
+        @endif
     </div>
 @endsection
 
@@ -153,6 +185,12 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" type="module"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            if ($("#password_berhasil").length) {
+                setTimeout(() => {
+                    $("#password_berhasil").attr('hidden', true);
+                }, 3000);
+            }
+
             $("#besar_tunjangan").maskMoney({
                 thousands: '.',
                 decimal: ',',
