@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\EmployeeControlller;
+use App\Http\Controllers\Admin\EmployeeControlller;
 use App\Http\Controllers\HistoryBenefitController;
 use App\Http\Controllers\BenefitController;
 use Illuminate\Support\Facades\Route;

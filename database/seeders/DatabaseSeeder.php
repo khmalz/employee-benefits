@@ -33,9 +33,8 @@ class DatabaseSeeder extends Seeder
 
         $user->employee()->create([
             'nik' => 'RTS20210711',
-            'nama' => 'AH',
-            'status' => 'Permanen',
-            'tanggal_masuk' => '2021-06-01',
+            'status' => 'permanen',
+            'tanggal_masuk' => '01-06-2021',
         ]);
     }
 }

@@ -2,6 +2,12 @@
 
 @section('content')
     <div>
+        @if (session()->has('success'))
+            <div class="mb-4 rounded-lg bg-green-50 p-4 text-sm text-green-800" id="password_berhasil" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="mb-4 flex w-full justify-between">
             <div class="w-1/3">
                 <form class="flex w-full items-center">
@@ -38,71 +44,86 @@
             <a class="rounded-lg bg-green-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300"
                 href="{{ route('employee.create') }}">Tambah Data</a>
         </div>
-        <table class="w-full text-center text-sm text-gray-500">
-            <thead class="0 bg-gray-50 text-xs uppercase text-gray-700">
-                <tr>
-                    <th class="px-6 py-3" scope="col">
-                        No
-                    </th>
-                    <th class="px-6 py-3" scope="col">
-                        Nama
-                    </th>
-                    <th class="px-6 py-3" scope="col">
-                        NIK
-                    </th>
-                    <th class="px-6 py-3" scope="col">
-                        Status
-                    </th>
-                    <th class="px-6 py-3" scope="col">
-                        Tunjangan Kesehatan
-                    </th>
-                    <th class="px-6 py-3" scope="col">
-                        Tunjangan Pernikahan
-                    </th>
-                    <th class="px-6 py-3" scope="col">
-                        Tunjangan Bencana
-                    </th>
-                    <th class="px-6 py-3" scope="col">
-                        Tunjangan Kematian
-                    </th>
-                    <th class="px-6 py-3" scope="col">
-                        Action
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="border-b bg-white font-medium hover:bg-gray-50">
-                    <th class="whitespace-nowrap px-6 py-4 text-gray-900" scope="row">
-                        1
-                    </th>
-                    <td class="px-6 py-4">
-                        Ahas
-                    </td>
-                    <td class="px-6 py-4">
-                        31750197271381
-                    </td>
-                    <td class="px-6 py-4">
-                        Permanen
-                    </td>
-                    <td class="px-6 py-4">
-                        5.000.000
-                    </td>
-                    <td class="px-6 py-4">
-                        5.000.000
-                    </td>
-                    <td class="px-6 py-4">
-                        5.000.000
-                    </td>
-                    <td class="px-6 py-4">
-                        5.000.000
-                    </td>
-                    <td class="flex items-center space-x-1 px-6 py-4">
-                        <a class="text-blue-600 hover:underline" href="#">Detail</a>
-                        <a class="text-rose-600 hover:underline" href="#">Hapus</a>
-                        <a class="text-cyan-600 hover:underline" href="#">Edit</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        @if (count($employees) > 0)
+            <table class="w-full text-center text-sm text-gray-500">
+                <thead class="0 bg-gray-50 text-xs uppercase text-gray-700">
+                    <tr>
+                        <th class="px-6 py-3" scope="col">
+                            No
+                        </th>
+                        <th class="px-6 py-3" scope="col">
+                            Nama
+                        </th>
+                        <th class="px-6 py-3" scope="col">
+                            NIK
+                        </th>
+                        <th class="px-6 py-3" scope="col">
+                            Status
+                        </th>
+                        <th class="px-6 py-3" scope="col">
+                            Tunjangan Kesehatan
+                        </th>
+                        <th class="px-6 py-3" scope="col">
+                            Tunjangan Pernikahan
+                        </th>
+                        <th class="px-6 py-3" scope="col">
+                            Tunjangan Bencana
+                        </th>
+                        <th class="px-6 py-3" scope="col">
+                            Tunjangan Kematian
+                        </th>
+                        <th class="px-6 py-3" scope="col">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($employees as $employee)
+                        <tr class="border-b bg-white font-medium hover:bg-gray-50">
+                            <th class="whitespace-nowrap px-6 py-4 text-gray-900" scope="row">
+                                {{ $loop->iteration }}
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $employee->user->name }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $employee->nik }}
+                            </td>
+                            <td class="px-6 py-4 capitalize">
+                                {{ $employee->status }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $employee->kesehatan }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $employee->pernikahan }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $employee->bencana }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $employee->kematian }}
+                            </td>
+                            <td class="flex items-center space-x-1 px-6 py-4">
+                                <a class="text-blue-600 hover:underline" href="#">Detail</a>
+                                <a class="text-cyan-600 hover:underline"
+                                    href="{{ route('employee.edit', $employee) }}">Edit</a>
+                                <form class="inline-block" action="{{ route('employee.destroy', $employee) }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <a class="cursor-pointer text-rose-600 hover:underline"
+                                        onclick="return confirm('Apakah kamu yakin untuk menghapus karyawan ini?') ? this.parentElement.submit() : null">Hapus</a>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <div class="w-full rounded-lg bg-white p-5 text-center">
+                Tidak ada data
+            </div>
+        @endif
     </div>
 @endsection

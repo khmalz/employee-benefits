@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('nik');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('nama');
             $table->string('status');
             $table->date('tanggal_masuk');
             $table->integer('kesehatan')->default(5000000);

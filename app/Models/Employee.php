@@ -13,7 +13,6 @@ class Employee extends Model
     protected $fillable = [
         'nik',
         'user_id',
-        'nama',
         'status',
         'tanggal_masuk',
         'kesehatan',

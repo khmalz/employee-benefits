@@ -3,16 +3,20 @@
 @section('content')
     <div>
         <div class="w-full rounded-lg bg-white p-5">
-            <h2 class="mb-3 text-xl font-semibold">Tambah Karyawan</h2>
+            <h2 class="mb-3 text-xl font-semibold">Edit Karyawan</h2>
 
-            <form action="{{ route('employee.store') }}" method="POST">
+            <form action="{{ route('employee.update', $employee) }}" method="POST">
                 @csrf
+                @method('PATCH')
+                <input name="userID" type="hidden" value="{{ $employee->user_id }}">
+                <input name="employeeID" type="hidden" value="{{ $employee->id }}">
 
                 <div class="mb-5">
                     <label class="mb-2 block text-sm font-medium text-gray-900" for="name">Nama</label>
                     <input
                         class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
-                        id="name" name="name" type="text" value="{{ old('name') }}" placeholder="nama" required>
+                        id="name" name="name" type="text" value="{{ old('name', $employee->user->name) }}"
+                        placeholder="nama" required>
                     @error('name')
                         <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
                     @enderror
@@ -22,27 +26,9 @@
                     <label class="mb-2 block text-sm font-medium text-gray-900" for="email">Email</label>
                     <input
                         class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
-                        id="email" name="email" type="email" value="{{ old('email') }}" placeholder="email"
-                        required>
+                        id="email" name="email" type="email" value="{{ old('email', $employee->user->email) }}"
+                        placeholder="email" required>
                     @error('email')
-                        <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="mb-5">
-                    <label class="mb-2 block text-sm font-medium text-gray-900" for="password">Password</label>
-                    <input
-                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
-                        id="password" name="password" type="password" placeholder="password" required>
-                    <div class="mt-1.5 flex items-center">
-                        <input
-                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-green-600 focus:ring-2 focus:ring-green-500"
-                            id="checkbox-password" type="checkbox" onclick="togglePasswordVisibility('password', this)">
-                        <label class="ms-1 text-sm font-medium text-gray-900 selection:normal-case"
-                            for="checkbox-password">Show
-                            Password</label>
-                    </div>
-                    @error('password')
                         <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
                     @enderror
                 </div>
@@ -51,8 +37,8 @@
                     <label class="mb-2 block text-sm font-medium text-gray-900" for="nik">NIK</label>
                     <input
                         class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
-                        id="nik" name="nik" type="text" value="{{ old('nik') }}" placeholder="nik" required
-                        oninput="enforceDigitsOnly(this, 20)">
+                        id="nik" name="nik" type="text" value="{{ old('nik', $employee->nik) }}"
+                        placeholder="nik" oninput="enforceDigitsOnly(this, 20)" required>
                     @error('nik')
                         <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
                     @enderror
@@ -65,8 +51,10 @@
                         class="decorated block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
                         id="status_employee" name="status">
                         <option selected disabled>Pilih status</option>
-                        <option value="kontrak" {{ old('status') == 'kontrak' ? 'selected' : null }}>Kontrak</option>
-                        <option value="permanen" {{ old('status') == 'permanen' ? 'selected' : null }}>Permanen</option>
+                        <option value="kontrak" {{ old('status', $employee->status) == 'kontrak' ? 'selected' : null }}>
+                            Kontrak</option>
+                        <option value="permanen" {{ old('status', $employee->status) == 'permanen' ? 'selected' : null }}>
+                            Permanen</option>
                     </select>
 
                     @error('status')
@@ -87,9 +75,10 @@
                         </div>
                         <input
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
-                            id="inp-started_at" name="tanggal_masuk" data-date="{{ old('tanggal_masuk') }}" type="text"
-                            value="{{ old('tanggal_masuk') }}" autocomplete="off" datepicker-autoselect-today
-                            datepicker-buttons datepicker datepicker-autohide placeholder="Pilih Tanggal">
+                            id="inp-started_at" name="tanggal_masuk"
+                            data-date="{{ old('tanggal_masuk', $employee->tanggal_masuk) }}" type="text"
+                            autocomplete="off" datepicker-autoselect-today datepicker-buttons datepicker datepicker-autohide
+                            placeholder="Pilih Tanggal">
                     </div>
 
                     @error('tanggal_masuk')
@@ -99,7 +88,7 @@
 
                 <button
                     class="rounded-lg bg-green-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
-                    type="submit">Tambah Karyawan</button>
+                    type="submit">Simpan Perubahan</button>
             </form>
         </div>
     </div>
@@ -109,8 +98,18 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const defaultDate = $('#inp-started_at').data('date');
-            const parsedDate = defaultDate ? new Date(defaultDate) : null;
-            new Datepicker(document.getElementById('inp-started_at'), {
+            let parsedDate = null;
+            if (defaultDate) {
+                const parts = defaultDate.split('-');
+                if (parts.length === 3) {
+                    const day = parseInt(parts[0], 10);
+                    const month = parseInt(parts[1], 10) - 1; // Month is 0-based
+                    const year = parseInt(parts[2], 10);
+                    parsedDate = new Date(year, month, day);
+                }
+            }
+
+            const datepicker = new Datepicker(document.getElementById('inp-started_at'), {
                 language: "id",
                 weekStart: 1,
                 autohide: true,
@@ -127,15 +126,6 @@
 
         function enforceDigitsOnly(input, maxLength = 20) {
             input.value = input.value.replace(/[^0-9]/g, '').slice(0, maxLength);
-        }
-
-        function togglePasswordVisibility(inputId, checkbox) {
-            const inputElement = document.getElementById(inputId);
-            if (checkbox.checked) {
-                inputElement.type = 'text';
-            } else {
-                inputElement.type = 'password';
-            }
         }
     </script>
 @endpush
