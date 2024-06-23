@@ -105,7 +105,8 @@
                                 {{ $employee->kematian }}
                             </td>
                             <td class="flex items-center space-x-1 px-6 py-4">
-                                <a class="text-blue-600 hover:underline" href="#">Detail</a>
+                                <a class="text-blue-600 hover:underline"
+                                    href="{{ route('employee.show', $employee) }}">Detail</a>
                                 <a class="text-cyan-600 hover:underline"
                                     href="{{ route('employee.edit', $employee) }}">Edit</a>
                                 <form class="inline-block" action="{{ route('employee.destroy', $employee) }}"

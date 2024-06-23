@@ -21,6 +21,10 @@ class Employee extends Model
         'kematian',
     ];
 
+    protected $casts = [
+        'tanggal_masuk' => 'date',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

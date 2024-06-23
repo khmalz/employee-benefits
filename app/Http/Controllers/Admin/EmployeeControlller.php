@@ -45,7 +45,9 @@ class EmployeeControlller extends Controller
      */
     public function show(Employee $employee)
     {
-        // 
+        $employee->load('user');
+
+        return view('dashboard.employee.detail', compact('employee'));
     }
 
     /**
