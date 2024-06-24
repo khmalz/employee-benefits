@@ -25,6 +25,11 @@ class Employee extends Model
         'tanggal_masuk' => 'date',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'nik';
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

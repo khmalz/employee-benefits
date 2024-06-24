@@ -76,9 +76,9 @@
                         <input
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
                             id="inp-started_at" name="tanggal_masuk"
-                            data-date="{{ old('tanggal_masuk', $employee->tanggal_masuk) }}" type="text"
-                            autocomplete="off" datepicker-autoselect-today datepicker-buttons datepicker datepicker-autohide
-                            placeholder="Pilih Tanggal">
+                            data-date="{{ old('tanggal_masuk', $employee->tanggal_masuk->format('d-m-Y')) }}"
+                            type="text" autocomplete="off" datepicker-autoselect-today datepicker-buttons datepicker
+                            datepicker-autohide placeholder="Pilih Tanggal">
                     </div>
 
                     @error('tanggal_masuk')
