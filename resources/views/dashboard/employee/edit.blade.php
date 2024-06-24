@@ -38,7 +38,7 @@
                     <input
                         class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
                         id="nik" name="nik" type="text" value="{{ old('nik', $employee->nik) }}"
-                        placeholder="nik" oninput="enforceDigitsOnly(this, 20)" required>
+                        placeholder="nik" required oninput="validateSingleSentence(this)">
                     @error('nik')
                         <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
                     @enderror
@@ -96,6 +96,10 @@
 
 @push('scripts')
     <script>
+        function validateSingleSentence(input) {
+            input.value = input.value.replace(/\s+/g, '');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const defaultDate = $('#inp-started_at').data('date');
             let parsedDate = null;
@@ -123,9 +127,5 @@
                 datepicker.setDate(parsedDate);
             }
         });
-
-        function enforceDigitsOnly(input, maxLength = 20) {
-            input.value = input.value.replace(/[^0-9]/g, '').slice(0, maxLength);
-        }
     </script>
 @endpush

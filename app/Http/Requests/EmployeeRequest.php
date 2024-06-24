@@ -26,7 +26,7 @@ class EmployeeRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->userID)],
-            'nik' => ['required', 'numeric', 'max:20', Rule::unique('employees', 'nik')->ignore($this->employeeID)],
+            'nik' => ['required', 'string', 'max:20', 'alpha_dash', Rule::unique('employees', 'nik')->ignore($this->employeeID)],
             'status' => ['required', 'string', Rule::in(['kontrak', 'permanen']),],
             'tanggal_masuk' => ['required', 'date_format:d-m-Y'],
         ];
