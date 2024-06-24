@@ -13,15 +13,21 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
-        Route::resource('benefit', BenefitController::class);
         Route::resource('employee', EmployeeControlller::class);
 
+        Route::get('/benefit', [BenefitController::class, 'index'])->name('benefit.index');
         Route::get('/benefit-done', [BenefitController::class, 'done'])->name('benefit.done');
+        Route::get('/benefit/{id}', [BenefitController::class, 'show'])->name('benefit.show');
     });
 
     Route::middleware('role:employee')->group(function () {
+        Route::resource('benefit', BenefitController::class)->except('index', 'show');
         Route::get('/request-benefit', RequestBenefitController::class)->name('request');
         Route::get('/history-benefit', HistoryBenefitController::class)->name('benefit.history');
+
+        Route::get('employee/benefits/{employee}', function (\App\Models\Employee $employee) {
+            return $employee->only('nik', 'kesehatan', 'pernikahan', 'bencana', 'kematian');
+        });
     });
 
 

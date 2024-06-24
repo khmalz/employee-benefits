@@ -107,27 +107,53 @@
             <div class="w-full rounded-lg bg-white p-5">
                 <h2 class="mb-3 text-xl font-semibold">Permintaan Tunjangan</h2>
 
-                <form action="#" enctype="multipart/form-data" method="POST">
+                <form action="{{ route('benefit.store') }}" enctype="multipart/form-data" method="POST">
                     @csrf
 
+                    <input name="employee_id" type="hidden" value="{{ auth()->user()->employee->id }}">
+                    <input id="employeeNIK" name="employeeNIK" type="hidden" value="{{ auth()->user()->employee->nik }}">
+
                     <div class="mb-5">
-                        <label class="mb-2 block text-sm font-medium text-gray-900" for="besar_tunjangan">Besar
+                        <label class="mb-2 block text-sm font-medium text-gray-900" for="jenis_tunjangan">Jenis
                             Tunjangan</label>
-                        <input
-                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
-                            id="besar_tunjangan" name="besar_tunjangan" type="text" value="{{ old('besar_tunjangan') }}"
-                            placeholder="1.000.000" required>
-                        @error('besar_tunjangan')
+                        <select
+                            class="decorated block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
+                            id="jenis_tunjangan" name="type">
+                            <option selected disabled>Pilih Jenis</option>
+                            <option value="kesehatan" {{ old('type') == 'kesehatan' ? 'selected' : null }}>Kesehatan
+                            </option>
+                            <option value="pernikahan" {{ old('type') == 'pernikahan' ? 'selected' : null }}>Pernikahan
+                            </option>
+                            <option value="bencana" {{ old('type') == 'bencana' ? 'selected' : null }}>Bencana</option>
+                            <option value="kematian" {{ old('type') == 'kematian' ? 'selected' : null }}>Kematian</option>
+                        </select>
+
+                        @error('type')
                             <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
                         @enderror
                     </div>
 
+                    <div class="mb-2">
+                        <label class="mb-2 block text-sm font-medium text-gray-900" for="besar_tunjangan">Besar
+                            Tunjangan</label>
+                        <input
+                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-green-500 focus:ring-green-500"
+                            id="besar_tunjangan" name="amount" type="text" value="{{ old('amount') }}"
+                            placeholder="1.000.000" required>
+                        @error('amount')
+                            <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="text-xs md:text-sm" id="wadah"></div>
+                    <div class="mb-5 text-xs md:text-sm" id="peringatan"></div>
+
                     <div class="mb-5">
-                        <label class="mb-2 block text-sm font-medium text-gray-900" for="teacher">Pesan</label>
+                        <label class="mb-2 block text-sm font-medium text-gray-900" for="message">Pesan</label>
                         <textarea
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
-                            id="pesan" rows="4" placeholder="Tulis pesan yang ingin disampaikan">{{ old('pesan') }}</textarea>
-                        @error('pesan')
+                            id="message" name="message" rows="4" placeholder="Tulis pesan yang ingin disampaikan">{{ old('message') }}</textarea>
+                        @error('message')
                             <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
                         @enderror
                     </div>
@@ -158,6 +184,7 @@
                             @error('file')
                                 <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
                             @enderror
+
                             <div id="image-container">
                                 @if (false)
                                     <div class="mt-2" id="image-pre">
@@ -171,7 +198,7 @@
 
                     <button
                         class="rounded-lg bg-green-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300"
-                        type="submit">Kirim</button>
+                        id="send-button" type="submit">Kirim</button>
                 </form>
 
             </div>
@@ -198,9 +225,60 @@
                 allowZero: true,
                 allowNegative: false,
             });
+
+            let data = ""
+            $("#jenis_tunjangan").on('change', function() {
+                data = $(this).val()
+                tampilkanSisaTunjangan(data)
+            })
+
+            var selectedValue = $("#jenis_tunjangan").val();
+            if (selectedValue) {
+                $("#jenis_tunjangan").change();
+            }
         })
     </script>
     <script>
+        function convertRupiah(angka) {
+            var reverse = angka.toString().split('').reverse().join(''),
+                ribuan = reverse.match(/\d{1,3}/g);
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        }
+
+        function tampilkanSisaTunjangan(jenis) {
+            const employeeNIK = $("#employeeNIK").val();
+
+            axios.get(`/employee/benefits/${employeeNIK}`)
+                .then(function(response) {
+                    var res = response.data;
+                    var $wadah = $("#wadah");
+                    var $peringatan = $("#peringatan");
+                    var $besarTunjangan = $("#besar_tunjangan");
+                    var $sendButton = $("#send-button");
+                    var $pemberitahuan = $('<span>', {
+                        class: 'text-blue-500',
+                        id: 'pemberitahuan'
+                    });
+
+                    $wadah.add($peringatan).empty();
+                    $besarTunjangan.add($sendButton).removeAttr('disabled');
+
+                    $wadah.html('Sisa Tunjangan Kamu ').append($pemberitahuan);
+                    $pemberitahuan.text("Rp. " + convertRupiah(res[jenis]));
+
+                    if (res[jenis] <= 0) {
+                        $peringatan.html(
+                            'Jatah Tunjangan Kamu <span class="text-rose-500">Sudah Habis, Tidak Bisa Pilih Tunjangan Tersebut</span>'
+                        );
+                        $besarTunjangan.add($sendButton).attr('disabled', 'true');
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        }
+
         function togglePasswordVisibility(inputId, checkbox) {
             const inputElement = document.getElementById(inputId);
             if (checkbox.checked) {
@@ -215,9 +293,7 @@
         function deleteImagePre() {
             const imageDiv = $("#image-container")
 
-            if (dt.items.length > 0) {
-                dt.items.clear();
-            }
+            dt.items.clear();
 
             imageDiv.html('');
         }
