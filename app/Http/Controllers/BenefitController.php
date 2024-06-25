@@ -11,12 +11,26 @@ class BenefitController extends Controller
 {
     public function index()
     {
-        return view("dashboard.benefit.list");
+        $pendingBenefits = Benefit::with("employee")
+            ->whereStatus(Benefit::MENUNGGU)
+            ->get();
+        $progressBenefits = Benefit::with("employee")
+            ->whereStatus(Benefit::PROSES)
+            ->get();
+        $rejectedBenefits = Benefit::with("employee")
+            ->whereStatus(Benefit::TOLAK)
+            ->get();
+
+        return view("dashboard.benefit.list", compact('pendingBenefits', 'progressBenefits', 'rejectedBenefits'));
     }
 
     public function done()
     {
-        return view("dashboard.benefit.done");
+        $doneBenefits = Benefit::with("employee")
+            ->whereStatus(Benefit::SELESAI)
+            ->get();
+
+        return view("dashboard.benefit.done", compact('doneBenefits'));
     }
 
     public function create()

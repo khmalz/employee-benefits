@@ -21,7 +21,7 @@
                 </li>
                 <li>
                     <a class="{{ request()->routeIs('benefit.*') ? 'text-blue-500' : 'text-gray-900' }} group flex items-center rounded-lg p-2 hover:bg-gray-100"
-                        href="{{ route('benefit.index') }}">
+                        href="{{ route('benefit.index', ['status' => 'menunggu']) }}">
                         <svg class="h-5 w-5 flex-shrink-0 transition duration-75" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                             <path fill-rule="evenodd"
@@ -52,7 +52,7 @@
                 </li>
                 <li>
                     <a class="{{ request()->routeIs('benefit.*') ? 'text-blue-500' : 'text-gray-900' }} group flex items-center rounded-lg p-2 hover:bg-gray-100"
-                        href="{{ route('benefit.history') }}">
+                        href="{{ route('benefit.history', ['status' => 'menunggu']) }}">
                         <svg class="h-5 w-5 flex-shrink-0 transition duration-75" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                             viewBox="0 0 24 24">

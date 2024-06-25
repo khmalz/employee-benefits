@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Benefit;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->foreignId('employee_id')->constrained(table: 'employees', indexName: 'benefits_employee_id_foreign')->cascadeOnDelete();
             $table->string('type');
             $table->integer('amount');
-            $table->string('status')->default('pending');
+            $table->string('status')->default(Benefit::MENUNGGU);
             $table->string('message');
             $table->string('file');
             $table->timestamps();

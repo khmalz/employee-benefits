@@ -137,154 +137,174 @@
                 <div class="hidden rounded-lg bg-gray-50" id="menunggu-example" role="tabpanel"
                     aria-labelledby="menunggu-tab-example">
                     <p class="text-sm text-gray-500">
-                    <table class="w-full text-left text-sm text-gray-500">
-                        <thead class="0 bg-gray-50 text-xs uppercase text-gray-700">
-                            <tr>
-                                <th class="px-6 py-3" scope="col">
-                                    Tanggal
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Kode
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Jenis Tunjangan
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Besar Tunjangan
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Status
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b bg-white hover:bg-gray-50">
-                                <th class="whitespace-nowrap px-6 py-4 font-medium text-gray-900" scope="row">
-                                    20 Oktober 2023
-                                </th>
-                                <td class="px-6 py-4">
-                                    8172KASN1
-                                </td>
-                                <td class="px-6 py-4">
-                                    Kesehatan
-                                </td>
-                                <td class="px-6 py-4">
-                                    150.000
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="me-2 rounded bg-purple-400 px-2.5 py-0.5 text-xs font-medium text-purple-800">Belum</span>
-                                </td>
-                                <td class="flex items-center px-6 py-4">
-                                    <a class="font-medium text-blue-600 hover:underline" href="#">Detail</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        @if ($pendingBenefits->isNotEmpty())
+                            <table class="w-full text-left text-sm text-gray-500">
+                                <thead class="0 bg-gray-50 text-xs uppercase text-gray-700">
+                                    <tr>
+                                        <th class="px-6 py-3" scope="col">
+                                            Tanggal
+                                        </th>
+                                        <th class="px-6 py-3" scope="col">
+                                            Kode
+                                        </th>
+                                        <th class="px-6 py-3" scope="col">
+                                            Jenis Tunjangan
+                                        </th>
+                                        <th class="px-6 py-3" scope="col">
+                                            Besar Tunjangan
+                                        </th>
+                                        <th class="px-6 py-3" scope="col">
+                                            Status
+                                        </th>
+                                        <th class="px-6 py-3" scope="col">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($pendingBenefits as $benefit)
+                                        <tr class="border-b bg-white hover:bg-gray-50">
+                                            <th class="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
+                                                scope="row">
+                                                {{ $benefit->created_at->format('d F Y') }}
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                {{ $benefit->code }}
+                                            </td>
+                                            <td class="px-6 py-4 capitalize">
+                                                {{ $benefit->type }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{ number_format($benefit->amount, 0, '', '.') }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <span
+                                                    class="me-2 rounded bg-purple-400 px-2.5 py-0.5 text-xs font-medium text-purple-800">Menunggu</span>
+                                            </td>
+                                            <td class="flex items-center px-6 py-4">
+                                                <a class="font-medium text-blue-600 hover:underline"
+                                                    href="#">Detail</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <p class="text-sm text-gray-500">Tidak ada data</p>
+                        @endif
                     </p>
                 </div>
-                <div class="hidden rounded-lg bg-gray-50 p-2" id="proses-example" role="tabpanel"
+                <div class="hidden rounded-lg bg-gray-50" id="proses-example" role="tabpanel"
                     aria-labelledby="proses-tab-example">
-                    <table class="w-full text-left text-sm text-gray-500">
-                        <thead class="0 bg-gray-50 text-xs uppercase text-gray-700">
-                            <tr>
-                                <th class="px-6 py-3" scope="col">
-                                    Tanggal
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Kode
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Jenis Tunjangan
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Besar Tunjangan
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Status
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b bg-white hover:bg-gray-50">
-                                <th class="whitespace-nowrap px-6 py-4 font-medium text-gray-900" scope="row">
-                                    20 Oktober 2023
-                                </th>
-                                <td class="px-6 py-4">
-                                    8172KASN1
-                                </td>
-                                <td class="px-6 py-4">
-                                    Kesehatan
-                                </td>
-                                <td class="px-6 py-4">
-                                    150.000
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="me-2 rounded bg-yellow-300 px-2.5 py-0.5 text-xs font-medium text-yellow-800">Proses</span>
-                                </td>
-                                <td class="flex items-center px-6 py-4">
-                                    <a class="font-medium text-blue-600 hover:underline" href="#">Detail</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    @if ($progressBenefits->isNotEmpty())
+                        <table class="w-full text-left text-sm text-gray-500">
+                            <thead class="0 bg-gray-50 text-xs uppercase text-gray-700">
+                                <tr>
+                                    <th class="px-6 py-3" scope="col">
+                                        Tanggal
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Kode
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Jenis Tunjangan
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Besar Tunjangan
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Status
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($progressBenefits as $benefit)
+                                    <tr class="border-b bg-white hover:bg-gray-50">
+                                        <th class="whitespace-nowrap px-6 py-4 font-medium text-gray-900" scope="row">
+                                            {{ $benefit->created_at->format('d F Y') }}
+                                        </th>
+                                        <td class="px-6 py-4">
+                                            {{ $benefit->code }}
+                                        </td>
+                                        <td class="px-6 py-4 capitalize">
+                                            {{ $benefit->type }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            {{ number_format($benefit->amount, 0, '', '.') }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span
+                                                class="bg-yellow-e00 me-2 rounded px-2.5 py-0.5 text-xs font-medium text-yellow-800">Proses</span>
+                                        </td>
+                                        <td class="flex items-center px-6 py-4">
+                                            <a class="font-medium text-blue-600 hover:underline" href="#">Detail</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <p class="text-sm text-gray-500">Tidak ada data</p>
+                    @endif
                 </div>
-                <div class="hidden rounded-lg bg-gray-50 p-2" id="ditolak-example" role="tabpanel"
+                <div class="hidden rounded-lg bg-gray-50" id="ditolak-example" role="tabpanel"
                     aria-labelledby="ditolak-tab-example">
-                    <table class="w-full text-left text-sm text-gray-500">
-                        <thead class="0 bg-gray-50 text-xs uppercase text-gray-700">
-                            <tr>
-                                <th class="px-6 py-3" scope="col">
-                                    Tanggal
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Kode
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Jenis Tunjangan
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Besar Tunjangan
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Status
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b bg-white hover:bg-gray-50">
-                                <th class="whitespace-nowrap px-6 py-4 font-medium text-gray-900" scope="row">
-                                    20 Oktober 2023
-                                </th>
-                                <td class="px-6 py-4">
-                                    8172KASN1
-                                </td>
-                                <td class="px-6 py-4">
-                                    Kesehatan
-                                </td>
-                                <td class="px-6 py-4">
-                                    150.000
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="me-2 rounded bg-red-300 px-2.5 py-0.5 text-xs font-medium text-red-800">Ditolak</span>
-                                </td>
-                                <td class="flex items-center px-6 py-4">
-                                    <a class="font-medium text-blue-600 hover:underline" href="#">Detail</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    @if ($rejectedBenefits->isNotEmpty())
+                        <table class="w-full text-left text-sm text-gray-500">
+                            <thead class="0 bg-gray-50 text-xs uppercase text-gray-700">
+                                <tr>
+                                    <th class="px-6 py-3" scope="col">
+                                        Tanggal
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Kode
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Jenis Tunjangan
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Besar Tunjangan
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Status
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($rejectedBenefits as $benefit)
+                                    <tr class="border-b bg-white hover:bg-gray-50">
+                                        <th class="whitespace-nowrap px-6 py-4 font-medium text-gray-900" scope="row">
+                                            {{ $benefit->created_at->format('d F Y') }}
+                                        </th>
+                                        <td class="px-6 py-4">
+                                            {{ $benefit->code }}
+                                        </td>
+                                        <td class="px-6 py-4 capitalize">
+                                            {{ $benefit->type }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            {{ number_format($benefit->amount, 0, '', '.') }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span
+                                                class="me-2 rounded bg-red-300 px-2.5 py-0.5 text-xs font-medium text-red-800">Ditolak</span>
+                                        </td>
+                                        <td class="flex items-center px-6 py-4">
+                                            <a class="font-medium text-blue-600 hover:underline" href="#">Detail</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <p class="text-sm text-gray-500">Tidak ada data</p>
+                    @endif
                 </div>
             </div>
 
@@ -295,6 +315,14 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const statusParam = urlParams.get('status');
+
+            if (!statusParam) {
+                const newUrl = window.location.pathname + '?status=menunggu';
+                window.location.replace(newUrl);
+            }
+
             new Datepicker(document.getElementById('inp-tanggal'), {
                 language: "id",
                 weekStart: 1,

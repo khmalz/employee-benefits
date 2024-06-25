@@ -24,7 +24,7 @@ class BenefitRequest extends FormRequest
     {
         return [
             'employee_id' => ['required', 'numeric'],
-            'type' => ['required', 'string', Rule::in(['kesehatan', 'pernikahan', 'bencana', 'kematian'])],
+            'type' => ['required', 'string', Rule::in(['kesehatan', 'bencana', 'transportasi', 'jabatan', 'makanan'])],
             'amount' => ['required', 'string', 'max:30'],
             'message' => ['required', 'string', 'max:100'],
             'file' => ['required', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],

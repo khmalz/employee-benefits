@@ -208,55 +208,59 @@
             <div id="tabContentExample">
                 <div class="rounded-lg bg-gray-50" id="selesai-example" role="tabpanel"
                     aria-labelledby="selesai-tab-example">
-                    <p class="text-sm text-gray-500">
-                    <table class="w-full text-left text-sm text-gray-500">
-                        <thead class="0 bg-gray-50 text-xs uppercase text-gray-700">
-                            <tr>
-                                <th class="px-6 py-3" scope="col">
-                                    Tanggal
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Kode
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Jenis Tunjangan
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Besar Tunjangan
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Status
-                                </th>
-                                <th class="px-6 py-3" scope="col">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b bg-white hover:bg-gray-50">
-                                <th class="whitespace-nowrap px-6 py-4 font-medium text-gray-900" scope="row">
-                                    20 Oktober 2023
-                                </th>
-                                <td class="px-6 py-4">
-                                    8172KASN1
-                                </td>
-                                <td class="px-6 py-4">
-                                    Kesehatan
-                                </td>
-                                <td class="px-6 py-4">
-                                    150.000
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="me-2 rounded bg-green-400 px-2.5 py-0.5 text-xs font-medium text-green-800">Selesai</span>
-                                </td>
-                                <td class="flex items-center px-6 py-4">
-                                    <a class="font-medium text-blue-600 hover:underline" href="#">Detail</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </p>
+                    @if ($doneBenefits->isNotEmpty())
+                        <table class="w-full text-left text-sm text-gray-500">
+                            <thead class="0 bg-gray-50 text-xs uppercase text-gray-700">
+                                <tr>
+                                    <th class="px-6 py-3" scope="col">
+                                        Tanggal
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Kode
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Jenis Tunjangan
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Besar Tunjangan
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Status
+                                    </th>
+                                    <th class="px-6 py-3" scope="col">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($doneBenefits as $benefit)
+                                    <tr class="border-b bg-white hover:bg-gray-50">
+                                        <th class="whitespace-nowrap px-6 py-4 font-medium text-gray-900" scope="row">
+                                            {{ $benefit->created_at->format('d F Y') }}
+                                        </th>
+                                        <td class="px-6 py-4">
+                                            {{ $benefit->code }}
+                                        </td>
+                                        <td class="px-6 py-4 capitalize">
+                                            {{ $benefit->type }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            {{ number_format($benefit->amount, 0, '', '.') }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span
+                                                class="me-2 rounded bg-green-400 px-2.5 py-0.5 text-xs font-medium text-green-800">Selesai</span>
+                                        </td>
+                                        <td class="flex items-center px-6 py-4">
+                                            <a class="font-medium text-blue-600 hover:underline" href="#">Detail</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <p class="text-sm text-gray-500">Tidak ada data</p>
+                    @endif
                 </div>
             </div>
 
