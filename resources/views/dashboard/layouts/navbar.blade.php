@@ -21,17 +21,17 @@
                 alt="user photo">
         </button>
         <!-- Dropdown menu -->
-        <div class="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded-lg bg-white text-base shadow"
+        <div class="z-50 my-4 hidden w-40 list-none divide-y divide-gray-100 rounded-lg bg-gray-100 text-base shadow-lg"
             id="user-dropdown">
             <div class="px-4 py-3">
                 <span class="block text-sm text-gray-900">Selamat Datang</span>
-                <span class="block truncate text-sm text-gray-800">Guest</span>
+                <span class="block truncate text-sm text-gray-800">{{ auth()->user()->name }}</span>
             </div>
             <ul class="py-2" aria-labelledby="user-menu-button">
                 <li>
                     <form class="inline-block w-full" action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="#"
+                        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" href="#"
                             onclick="return confirm('Apakah Yakin?') ? this.parentElement.submit() : null">Sign out</a>
                     </form>
                 </li>

@@ -19,7 +19,7 @@
     @include('dashboard.layouts.navbar')
     @include('dashboard.layouts.sidebar')
 
-    <div class="min-h-screen bg-[#ebebeb] p-4 pt-20 sm:ml-64">
+    <div class="min-h-screen bg-[#ebebeb] p-4 pt-20 sm:ml-56 md:ml-64">
         @yield('content')
     </div>
 
