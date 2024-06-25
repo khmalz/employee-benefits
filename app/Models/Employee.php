@@ -16,9 +16,10 @@ class Employee extends Model
         'status',
         'tanggal_masuk',
         'kesehatan',
-        'pernikahan',
         'bencana',
-        'kematian',
+        'transportasi',
+        'jabatan',
+        'makanan',
     ];
 
     protected $casts = [

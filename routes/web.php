@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/history-benefit', HistoryBenefitController::class)->name('benefit.history');
 
         Route::get('employee/benefits/{employee}', function (\App\Models\Employee $employee) {
-            return $employee->only('nik', 'kesehatan', 'pernikahan', 'bencana', 'kematian');
+            return $employee->only('nik', 'kesehatan', 'bencana', 'transportasi', 'jabatan', 'makanan');
         });
     });
 

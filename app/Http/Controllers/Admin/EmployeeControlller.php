@@ -33,6 +33,9 @@ class EmployeeControlller extends Controller
     public function store(EmployeeRequest $request)
     {
         $data = $request->validated();
+        foreach (['kesehatan', 'bencana', 'transportasi', 'jabatan', 'makanan'] as $key) {
+            $data[$key] = str_replace(['.', ','], '', $data[$key]);
+        }
 
         $user = User::create($data);
         $user->employee()->create($data);
@@ -66,6 +69,9 @@ class EmployeeControlller extends Controller
     public function update(EmployeeRequest $request, Employee $employee)
     {
         $data = $request->validated();
+        foreach (['kesehatan', 'bencana', 'transportasi', 'jabatan', 'makanan'] as $key) {
+            $data[$key] = str_replace(['.', ','], '', $data[$key]);
+        }
 
         $employee->user()->update([
             'name' => $data['name'],

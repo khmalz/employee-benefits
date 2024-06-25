@@ -122,10 +122,11 @@
                             <option selected disabled>Pilih Jenis</option>
                             <option value="kesehatan" {{ old('type') == 'kesehatan' ? 'selected' : null }}>Kesehatan
                             </option>
-                            <option value="pernikahan" {{ old('type') == 'pernikahan' ? 'selected' : null }}>Pernikahan
-                            </option>
                             <option value="bencana" {{ old('type') == 'bencana' ? 'selected' : null }}>Bencana</option>
-                            <option value="kematian" {{ old('type') == 'kematian' ? 'selected' : null }}>Kematian</option>
+                            <option value="transportasi" {{ old('type') == 'transportasi' ? 'selected' : null }}>
+                                Transportasi</option>
+                            <option value="jabatan" {{ old('type') == 'jabatan' ? 'selected' : null }}>Jabatan</option>
+                            <option value="makanan" {{ old('type') == 'makanan' ? 'selected' : null }}>Makanan</option>
                         </select>
 
                         @error('type')

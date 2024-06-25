@@ -29,6 +29,11 @@ class EmployeeRequest extends FormRequest
             'nik' => ['required', 'string', 'max:20', 'alpha_dash', Rule::unique('employees', 'nik')->ignore($this->employeeID)],
             'status' => ['required', 'string', Rule::in(['kontrak', 'permanen']),],
             'tanggal_masuk' => ['required', 'date_format:d-m-Y'],
+            'kesehatan' => ['required', 'string', 'max:12'],
+            'bencana' => ['required', 'string', 'max:12'],
+            'transportasi' => ['required', 'string', 'max:12'],
+            'jabatan' => ['required', 'string', 'max:12'],
+            'makanan' => ['required', 'string', 'max:12'],
         ];
     }
 }

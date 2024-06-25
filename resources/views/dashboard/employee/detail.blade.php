@@ -47,20 +47,29 @@
                     </li>
                     <li class="w-full rounded-t-lg border-b border-gray-200 py-2">
                         <div class="flex justify-between">
-                            <span class="">Tunjangan Pernikahan</span>
-                            <span class="font-normal">Rp. {{ number_format($employee->pernikahan, 0, '', '.') }}</span>
-                        </div>
-                    </li>
-                    <li class="w-full rounded-t-lg border-b border-gray-200 py-2">
-                        <div class="flex justify-between">
                             <span class="">Tunjangan Bencana</span>
                             <span class="font-normal">Rp. {{ number_format($employee->bencana, 0, '', '.') }}</span>
                         </div>
                     </li>
+                    </li>
                     <li class="w-full rounded-t-lg border-b border-gray-200 py-2">
                         <div class="flex justify-between">
-                            <span class="">Tunjangan Kematian</span>
-                            <span class="font-normal">Rp. {{ number_format($employee->kematian, 0, '', '.') }}</span>
+                            <span class="">Tunjangan Transportasi</span>
+                            <span class="font-normal">Rp. {{ number_format($employee->transportasi, 0, '', '.') }}</span>
+                        </div>
+                    </li>
+                    </li>
+                    <li class="w-full rounded-t-lg border-b border-gray-200 py-2">
+                        <div class="flex justify-between">
+                            <span class="">Tunjangan Jabatan</span>
+                            <span class="font-normal">Rp. {{ number_format($employee->jabatan, 0, '', '.') }}</span>
+                        </div>
+                    </li>
+                    </li>
+                    <li class="w-full rounded-t-lg border-b border-gray-200 py-2">
+                        <div class="flex justify-between">
+                            <span class="">Tunjangan Makanan</span>
+                            <span class="font-normal">Rp. {{ number_format($employee->makanan, 0, '', '.') }}</span>
                         </div>
                     </li>
                 </ul>

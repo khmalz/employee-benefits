@@ -45,82 +45,90 @@
                 href="{{ route('employee.create') }}">Tambah Data</a>
         </div>
         @if (count($employees) > 0)
-            <table class="w-full text-center text-sm text-gray-500">
-                <thead class="0 bg-gray-50 text-xs uppercase text-gray-700">
-                    <tr>
-                        <th class="px-6 py-3" scope="col">
-                            No
-                        </th>
-                        <th class="px-6 py-3" scope="col">
-                            Nama
-                        </th>
-                        <th class="px-6 py-3" scope="col">
-                            NIK
-                        </th>
-                        <th class="px-6 py-3" scope="col">
-                            Status
-                        </th>
-                        <th class="px-6 py-3" scope="col">
-                            Tunjangan Kesehatan
-                        </th>
-                        <th class="px-6 py-3" scope="col">
-                            Tunjangan Pernikahan
-                        </th>
-                        <th class="px-6 py-3" scope="col">
-                            Tunjangan Bencana
-                        </th>
-                        <th class="px-6 py-3" scope="col">
-                            Tunjangan Kematian
-                        </th>
-                        <th class="px-6 py-3" scope="col">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($employees as $employee)
-                        <tr class="border-b bg-white font-medium hover:bg-gray-50">
-                            <th class="whitespace-nowrap px-6 py-4 text-gray-900" scope="row">
-                                {{ $loop->iteration }}
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-center text-sm text-gray-500">
+                    <thead class="0 bg-gray-50 text-xs uppercase text-gray-700">
+                        <tr>
+                            <th class="px-6 py-3" scope="col">
+                                No
                             </th>
-                            <td class="px-6 py-4">
-                                {{ $employee->user->name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $employee->nik }}
-                            </td>
-                            <td class="px-6 py-4 capitalize">
-                                {{ $employee->status }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $employee->kesehatan }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $employee->pernikahan }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $employee->bencana }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $employee->kematian }}
-                            </td>
-                            <td class="flex items-center space-x-1 px-6 py-4">
-                                <a class="text-blue-600 hover:underline"
-                                    href="{{ route('employee.show', $employee) }}">Detail</a>
-                                <a class="text-cyan-600 hover:underline"
-                                    href="{{ route('employee.edit', $employee) }}">Edit</a>
-                                <form class="inline-block" action="{{ route('employee.destroy', $employee) }}"
-                                    method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <a class="cursor-pointer text-rose-600 hover:underline"
-                                        onclick="return confirm('Apakah kamu yakin untuk menghapus karyawan ini?') ? this.parentElement.submit() : null">Hapus</a>
-                                </form>
-                            </td>
+                            <th class="px-6 py-3" scope="col">
+                                Nama
+                            </th>
+                            <th class="px-6 py-3" scope="col">
+                                NIK
+                            </th>
+                            <th class="px-6 py-3" scope="col">
+                                Status
+                            </th>
+                            <th class="px-6 py-3" scope="col">
+                                Tunjangan Kesehatan
+                            </th>
+                            <th class="px-6 py-3" scope="col">
+                                Tunjangan Bencana
+                            </th>
+                            <th class="px-6 py-3" scope="col">
+                                Tunjangan Transportasi
+                            </th>
+                            <th class="px-6 py-3" scope="col">
+                                Tunjangan Jabatan
+                            </th>
+                            <th class="px-6 py-3" scope="col">
+                                Tunjangan Makanan
+                            </th>
+                            <th class="px-6 py-3" scope="col">
+                                Action
+                            </th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($employees as $employee)
+                            <tr class="border-b bg-white font-medium hover:bg-gray-50">
+                                <th class="whitespace-nowrap px-6 py-4 text-gray-900" scope="row">
+                                    {{ $loop->iteration }}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ $employee->user->name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $employee->nik }}
+                                </td>
+                                <td class="px-6 py-4 capitalize">
+                                    {{ $employee->status }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $employee->kesehatan }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $employee->bencana }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $employee->transportasi }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $employee->jabatan }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $employee->makanan }}
+                                </td>
+                                <td class="flex items-center space-x-1 px-6 py-4">
+                                    <a class="text-blue-600 hover:underline"
+                                        href="{{ route('employee.show', $employee) }}">Detail</a>
+                                    <a class="text-cyan-600 hover:underline"
+                                        href="{{ route('employee.edit', $employee) }}">Edit</a>
+                                    <form class="inline-block" action="{{ route('employee.destroy', $employee) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <a class="cursor-pointer text-rose-600 hover:underline"
+                                            onclick="return confirm('Apakah kamu yakin untuk menghapus karyawan ini?') ? this.parentElement.submit() : null">Hapus</a>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         @else
             <div class="w-full rounded-lg bg-white p-5 text-center">
                 Tidak ada data

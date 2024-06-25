@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string('nik');
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('nik')->unique();
+            $table->foreignId('user_id')->constrained(table: 'users', indexName: 'employees_user_id_foreign')->cascadeOnDelete();
             $table->string('status');
             $table->date('tanggal_masuk');
-            $table->integer('kesehatan')->default(5000000);
-            $table->integer('pernikahan')->default(2500000);
-            $table->integer('bencana')->default(5000000);
-            $table->integer('kematian')->default(10000000);
+            $table->integer('kesehatan')->default(2000000);
+            $table->integer('bencana')->default(2000000);
+            $table->integer('transportasi')->default(1000000);
+            $table->integer('jabatan')->default(1000000);
+            $table->integer('makanan')->default(1000000);
             $table->timestamps();
         });
     }
