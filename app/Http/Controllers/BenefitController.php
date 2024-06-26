@@ -13,13 +13,13 @@ class BenefitController extends Controller
     {
         $pendingBenefits = Benefit::with("employee")
             ->whereStatus(Benefit::MENUNGGU)
-            ->get();
+            ->paginate(1);
         $progressBenefits = Benefit::with("employee")
             ->whereStatus(Benefit::PROSES)
-            ->get();
+            ->paginate(1);
         $rejectedBenefits = Benefit::with("employee")
             ->whereStatus(Benefit::TOLAK)
-            ->get();
+            ->paginate(1);
 
         return view("dashboard.benefit.list", compact('pendingBenefits', 'progressBenefits', 'rejectedBenefits'));
     }
