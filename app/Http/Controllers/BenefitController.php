@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Benefit;
 use Illuminate\Http\Request;
 use App\Http\Requests\BenefitRequest;
@@ -9,28 +10,52 @@ use Illuminate\Validation\ValidationException;
 
 class BenefitController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pendingBenefits = Benefit::with("employee")
-            ->whereStatus(Benefit::MENUNGGU)
-            ->paginate(1);
-        $progressBenefits = Benefit::with("employee")
-            ->whereStatus(Benefit::PROSES)
-            ->paginate(1);
-        $rejectedBenefits = Benefit::with("employee")
-            ->whereStatus(Benefit::TOLAK)
+        $status = $request->status ?? 'menunggu';
+
+        $benefits = Benefit::with("employee.user:id,name")
+            ->when($status === "menunggu", function ($query) {
+                return $query->whereStatus(Benefit::MENUNGGU);
+            })
+            ->when($status === "proses", function ($query) {
+                return $query->whereStatus(Benefit::PROSES);
+            })
+            ->when($status === "ditolak", function ($query) {
+                return $query->whereStatus(Benefit::TOLAK);
+            })
+            ->when($request->has('nama') && !empty($request->nama), function ($query) use ($request) {
+                return $query->whereUserName($request->nama);
+            })
+            ->when($request->has('tanggal') && !empty($request->tanggal), function ($query) use ($request) {
+                $tanggal = Carbon::parse($request->tanggal)->format('Y-m-d');
+                return $query->whereDate('created_at', $tanggal);
+            })
+            ->when($request->has('jenis') && !empty($request->jenis), function ($query) use ($request) {
+                return $query->whereType($request->jenis);
+            })
             ->paginate(1);
 
-        return view("dashboard.benefit.list", compact('pendingBenefits', 'progressBenefits', 'rejectedBenefits'));
+        return view("dashboard.benefit.list", compact('benefits'));
     }
 
-    public function done()
+    public function done(Request $request)
     {
-        $doneBenefits = Benefit::with("employee")
+        $benefits = Benefit::with("employee.user:id,name")
             ->whereStatus(Benefit::SELESAI)
-            ->get();
+            ->when($request->has('nama') && !empty($request->nama), function ($query) use ($request) {
+                return $query->whereUserName($request->nama);
+            })
+            ->when($request->has('tanggal') && !empty($request->tanggal), function ($query) use ($request) {
+                $tanggal = Carbon::parse($request->tanggal)->format('Y-m-d');
+                return $query->whereDate('created_at', $tanggal);
+            })
+            ->when($request->has('jenis') && !empty($request->jenis), function ($query) use ($request) {
+                return $query->whereType($request->jenis);
+            })
+            ->paginate(1);
 
-        return view("dashboard.benefit.done", compact('doneBenefits'));
+        return view("dashboard.benefit.done", compact('benefits'));
     }
 
     public function create()

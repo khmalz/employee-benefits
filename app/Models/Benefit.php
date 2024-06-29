@@ -58,4 +58,16 @@ class Benefit extends Model
     {
         return $query->where('employee_id', $employeeID);
     }
+
+    public function scopeWhereUserName(Builder $query, string $nama)
+    {
+        return $query->whereHas('employee.user', function ($q) use ($nama) {
+            $q->where('name', 'like', $nama);
+        });
+    }
+
+    public function scopeWhereType(Builder $query, string $type)
+    {
+        return $query->where('type', $type);
+    }
 }
