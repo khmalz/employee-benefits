@@ -2,6 +2,18 @@
 
 @section('content')
     <div>
+        @if (session()->has('success'))
+            <div class="mb-4 rounded-lg bg-green-50 p-4 text-sm text-green-800" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session()->has('reject'))
+            <div class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800" role="alert">
+                {{ session('reject') }}
+            </div>
+        @endif
+
         <div class="mb-4 flex w-full items-center justify-between">
             <div>
                 <button
@@ -187,7 +199,7 @@
                                         {{ $benefit->type }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ number_format($benefit->amount, 0, '', '.') }}
+                                        Rp. {{ number_format($benefit->amount, 0, '', '.') }}
                                     </td>
                                     <td class="px-6 py-4">
                                         @php
@@ -203,7 +215,8 @@
                                             class="{{ $color }} me-2 rounded px-2.5 py-0.5 text-xs font-medium text-white">{{ ucfirst($text) }}</span>
                                     </td>
                                     <td class="flex items-center px-6 py-4">
-                                        <a class="font-medium text-blue-600 hover:underline" href="#">Detail</a>
+                                        <a class="font-medium text-blue-600 hover:underline"
+                                            href="{{ route('benefit.show', $benefit) }}">Detail</a>
                                     </td>
                                 </tr>
                             @endforeach

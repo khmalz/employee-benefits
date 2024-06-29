@@ -2,11 +2,11 @@
 
 @section('content')
     <div class="mb-4 flex w-full justify-between">
-        <h1 class="text-xl font-bold">Detail Tunjangan | <span class="text-blue-600">#B419JS86G</span></h1>
+        <h1 class="text-xl font-bold">Detail Tunjangan | <span class="text-blue-600">#{{ $benefit->code }}</span></h1>
         <div class="flex space-x-2">
             <button
                 class="block rounded-lg bg-sky-500 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-600 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                data-modal-target="popup-modal" data-modal-toggle="popup-modal" type="button">
+                data-modal-target="export-pdf-modal" data-modal-toggle="export-pdf-modal" type="button">
                 Ekspor ke PDF
             </button>
 
@@ -42,9 +42,9 @@
             <div class="flex flex-col items-center">
                 <img class="mb-3 h-24 w-24 rounded-full shadow-lg" src="{{ asset('images/Anon Bussines.png') }}"
                     alt="Bonnie image" />
-                <h5 class="mb-1 text-xl font-medium text-gray-900">Ahas</h5>
-                <span class="text-sm text-gray-500">ahas@gmail.com | Visual Designer</span>
-                <span class="mt-2 text-sm font-medium text-gray-700">RTS20210701</span>
+                <h5 class="mb-1 text-xl font-medium text-gray-900">{{ $benefit->employee->user->name }}</h5>
+                <span class="text-sm text-gray-500">{{ $benefit->employee->user->email }}</span>
+                <span class="mt-2 text-sm font-medium text-gray-700">{{ $benefit->employee->nik }}</span>
             </div>
         </div>
         <div class="w-2/3">
@@ -54,32 +54,40 @@
                     <li class="w-full rounded-t-lg border-b border-gray-200 py-2">
                         <div class="flex justify-between">
                             <span class="">Jenis Tunjangan</span>
-                            <span class="font-normal">Kesehatan</span>
+                            <span class="font-normal capitalize">{{ $benefit->type }}</span>
                         </div>
                     </li>
                     <li class="w-full rounded-t-lg border-b border-gray-200 py-2">
                         <div class="flex justify-between">
                             <span class="">Status</span>
-                            <span class="font-normal text-purple-800">Belum</span>
+                            @php
+                                $status = strtolower($benefit->status);
+                                [$color, $text] = match ($status) {
+                                    'pending' => ['text-purple-800', 'Menunggu'],
+                                    'progress' => ['text-yellow-800', 'Proses'],
+                                    'reject' => ['text-red-800', 'Ditolak'],
+                                    default => ['text-gray-800', 'Unknown'],
+                                };
+                            @endphp
+                            <span class="{{ $color }} font-normal">{{ $text }}</span>
                         </div>
                     </li>
                     <li class="w-full rounded-t-lg border-b border-gray-200 py-2">
                         <div class="flex justify-between">
                             <span class="">Tanggal</span>
-                            <span class="font-normal">20 September 2023</span>
+                            <span class="font-normal">{{ $benefit->created_at->format('d F Y') }}</span>
                         </div>
                     </li>
                     <li class="w-full rounded-t-lg border-b border-gray-200 py-2">
                         <div class="flex justify-between">
                             <span class="">Besar Tunjangan</span>
-                            <span class="font-normal">Rp. 1.000.000</span>
+                            <span class="font-normal">Rp. {{ number_format($benefit->amount, 0, '', '.') }}</span>
                         </div>
                     </li>
                     <li class="w-full rounded-b-lg py-2">
                         <div class="flex flex-col">
                             <span>Pesan</span>
-                            <span class="font-normal">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam,
-                                et?</span>
+                            <span class="font-normal">{{ $benefit->message }}</span>
                         </div>
                     </li>
                 </ul>
@@ -93,12 +101,10 @@
                 <h2 class="text-lg font-medium">File Pendukung</h2>
 
                 <div class="mt-2 max-w-sm rounded-lg border-none bg-white">
-                    <a class="image-lightbox duration-700 ease-in-out" data-width="800px" data-height="500px"
-                        href="https://picsum.photos/id/1/800/500">
-                        <img class="rounded-t-lg" src="https://picsum.photos/id/1/800/500" alt="" />
+                    <a class="image-lightbox duration-700 ease-in-out" data-width="800px" data-height="800px"
+                        href="{{ asset('images/' . $benefit->file) }}">
+                        <img class="rounded-t-lg" src="{{ asset('images/' . $benefit->file) }}" alt="" />
                     </a>
-                    <p class="mb-3 mt-1.5 font-normal text-gray-700">Here are the biggest enterprise
-                        technology acquisitions of 2021 so far, in reverse chronological order.</p>
                 </div>
 
             </div>
@@ -106,12 +112,12 @@
     </div>
 
     <div class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0"
-        id="popup-modal" tabindex="-1">
+        id="export-pdf-modal" tabindex="-1">
         <div class="relative max-h-full w-full max-w-md p-4">
             <div class="relative rounded-lg bg-white py-2 shadow">
                 <button
                     class="absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-                    data-modal-hide="popup-modal" type="button">
+                    data-modal-hide="export-pdf-modal" type="button">
                     <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -128,12 +134,12 @@
                     <h3 class="mb-5 text-lg font-normal text-gray-500">Ekspor Data?</h3>
                     <button
                         class="inline-flex items-center rounded-lg bg-sky-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-4 focus:ring-sky-300"
-                        data-modal-hide="popup-modal" type="button">
+                        data-modal-hide="export-pdf-modal" type="button">
                         Ya
                     </button>
                     <button
                         class="ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
-                        data-modal-hide="popup-modal" type="button">Tidak</button>
+                        data-modal-hide="export-pdf-modal" type="button">Tidak</button>
                 </div>
             </div>
         </div>
@@ -142,9 +148,7 @@
     <div class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0"
         id="tanggapan-modal" aria-hidden="true" tabindex="-1">
         <div class="relative max-h-full w-full max-w-xl p-4">
-            <!-- Modal content -->
             <div class="relative rounded-lg bg-white shadow">
-                <!-- Modal header -->
                 <div class="flex items-center justify-between rounded-t border-b p-4 md:p-5">
                     <h3 class="text-xl font-semibold text-gray-900">
                         Tanggapan
@@ -161,37 +165,41 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <div class="space-y-4 p-4 md:p-5">
-                    <form class="w-full">
+                <form class="w-full" method="POST" action="{{ route('response.store', $benefit) }}">
+                    @csrf
+                    <div class="space-y-4 p-4 md:p-5">
                         <div class="mb-5">
                             <label class="mb-2 block text-sm font-medium text-gray-900" for="status">Status</label>
                             <select
                                 class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                                id="status">
-                                <option selected>Pilih status</option>
-                                <option value="tolak">Menolak</option>
-                                <option value="proses">Proses</option>
-                                <option value="selesai">Selesai</option>
+                                id="status" name="status">
+                                <option selected disabled>Pilih status</option>
+                                <option value="reject" {{ old('status') == 'reject' ? 'selected' : null }}
+                                    {{ $benefit->status == 'reject' ? 'disabled' : null }}>Menolak
+                                </option>
+                                <option value="progress" {{ old('status') == 'progress' ? 'selected' : null }}
+                                    {{ $benefit->status == 'progress' ? 'disabled' : null }}>Proses
+                                </option>
+                                <option value="done" {{ old('status') == 'done' ? 'selected' : null }}>Selesai
+                                </option>
                             </select>
                         </div>
                         <div class="mb-5">
-                            <label class="mb-2 block text-sm font-medium text-gray-900" for="teacher">Pesan</label>
+                            <label class="mb-2 block text-sm font-medium text-gray-900" for="pesan">Pesan</label>
                             <textarea
                                 class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                                id="pesan" rows="2" placeholder="Tulis pesan">{{ old('pesan') }}</textarea>
-                            @error('pesan')
+                                id="pesan" name="message" rows="2" placeholder="Tulis pesan">{{ old('message') }}</textarea>
+                            @error('message')
                                 <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
                             @enderror
                         </div>
-                    </form>
-                </div>
-                <!-- Modal footer -->
-                <div class="flex items-center justify-end rounded-b border-t border-gray-200 p-4 md:p-5">
-                    <button
-                        class="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                        type="button">Kirim Tanggapan</button>
-
-                </div>
+                    </div>
+                    <div class="flex items-center justify-end rounded-b border-t border-gray-200 p-4 md:p-5">
+                        <button
+                            class="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                            type="submit">Kirim Tanggapan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

@@ -86,22 +86,24 @@ class BenefitController extends Controller
         return to_route('request')->with('success', 'Berhasil mengirim permintaan tunjangan');
     }
 
-    public function show(string $id)
+    public function show(Benefit $benefit)
     {
-        return view('dashboard.benefit.detail');
+        $benefit->load('employee.user');
+
+        return view('dashboard.benefit.detail', compact('benefit'));
     }
 
-    public function edit(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
+    public function edit(Benefit $benefit)
     {
         //
     }
 
-    public function destroy(string $id)
+    public function update(Request $request, Benefit $benefit)
+    {
+        //
+    }
+
+    public function destroy(Benefit $benefit)
     {
         //
     }

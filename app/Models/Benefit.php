@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\MixCaseULID;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -47,6 +48,11 @@ class Benefit extends Model
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'employee_id');
+    }
+
+    public function response(): HasMany
+    {
+        return $this->hasMany(Response::class, 'benefit_id');
     }
 
     public function scopeWhereStatus(Builder $query, string $status)

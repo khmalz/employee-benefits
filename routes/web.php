@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\EmployeeControlller;
-use App\Http\Controllers\HistoryBenefitController;
-use App\Http\Controllers\BenefitController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BenefitController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\HistoryBenefitController;
 use App\Http\Controllers\RequestBenefitController;
+use App\Http\Controllers\Admin\EmployeeControlller;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,7 +18,10 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/benefit', [BenefitController::class, 'index'])->name('benefit.index');
         Route::get('/benefit-done', [BenefitController::class, 'done'])->name('benefit.done');
-        Route::get('/benefit/{id}', [BenefitController::class, 'show'])->name('benefit.show');
+        Route::get('/benefit/{benefit}', [BenefitController::class, 'show'])->name('benefit.show');
+
+        Route::resource('response', ResponseController::class)->except('create', 'store');
+        Route::post('/response/{benefit}', [ResponseController::class, 'store'])->name('response.store');
     });
 
     Route::middleware('role:employee')->group(function () {
