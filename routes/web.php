@@ -18,7 +18,6 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/benefit', [BenefitController::class, 'index'])->name('benefit.index');
         Route::get('/benefit-done', [BenefitController::class, 'done'])->name('benefit.done');
-        Route::get('/benefit/{benefit}', [BenefitController::class, 'show'])->name('benefit.show');
 
         Route::resource('response', ResponseController::class)->except('create', 'store');
         Route::post('/response/{benefit}', [ResponseController::class, 'store'])->name('response.store');
@@ -26,7 +25,8 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:employee')->group(function () {
         Route::resource('benefit', BenefitController::class)->except('index', 'show');
-        Route::get('/request-benefit', RequestBenefitController::class)->name('request');
+        Route::get('/request-benefit', [RequestBenefitController::class, 'create'])->name('request');
+        Route::get('/edit-request-benefit/{benefit}', [RequestBenefitController::class, 'edit'])->name('request-edit');
         Route::get('/history-benefit', HistoryBenefitController::class)->name('benefit.history');
 
         Route::get('employee/benefits/{employee}', function (\App\Models\Employee $employee) {
@@ -34,10 +34,7 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/benefit/{benefit}', [BenefitController::class, 'show'])->name('benefit.show');
 });
 
 require __DIR__ . '/auth.php';

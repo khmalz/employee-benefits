@@ -187,12 +187,6 @@
                             @enderror
 
                             <div id="image-container">
-                                @if (false)
-                                    <div class="mt-2" id="image-pre">
-                                        <img class="h-60 w-full rounded-md border bg-slate-200/70 shadow-sm"
-                                            src="#" alt="preview-image">
-                                    </div>
-                                @endif
                             </div>
                         </div>
                     </div>

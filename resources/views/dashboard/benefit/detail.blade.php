@@ -4,36 +4,61 @@
     <div class="mb-4 flex w-full justify-between">
         <h1 class="text-xl font-bold">Detail Tunjangan | <span class="text-blue-600">#{{ $benefit->code }}</span></h1>
         <div class="flex space-x-2">
-            <button
-                class="block rounded-lg bg-sky-500 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-600 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                data-modal-target="export-pdf-modal" data-modal-toggle="export-pdf-modal" type="button">
-                Ekspor ke PDF
-            </button>
+            @if ($benefit->status == 'reject' || $benefit->status == 'done')
+                <button
+                    class="block rounded-lg bg-sky-500 px-4 py-2 text-center text-sm font-medium text-white hover:bg-sky-600 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                    data-modal-target="export-pdf-modal" data-modal-toggle="export-pdf-modal" type="button">
+                    Ekspor ke PDF
+                </button>
+            @endif
 
-            <button
-                class="inline-flex items-center rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                id="dropdownDefaultButton" data-dropdown-toggle="dropdown" type="button">Aksi <svg class="ms-2 h-2.5 w-2.5"
-                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m1 1 4 4 4-4" />
-                </svg>
-            </button>
+            @role('admin')
+                @if ($benefit->status !== 'done')
+                    <button
+                        class="inline-flex items-center rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                        id="dropdownDefaultButton" data-dropdown-toggle="dropdown" type="button">Aksi <svg
+                            class="ms-2 h-2.5 w-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+                    </button>
 
-            <!-- Dropdown menu -->
-            <div class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow" id="dropdown">
-                <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
-                    <li>
-                        <a class="block px-4 py-2 hover:bg-gray-100" data-modal-target="tanggapan-modal"
-                            data-modal-toggle="tanggapan-modal" href="#" role="button">Tanggapan</a>
-                    </li>
-                    <li>
-                        <a class="block px-4 py-2 hover:bg-gray-100" href="#">Edit Permintaan</a>
-                    </li>
-                    <li>
-                        <a class="block px-4 py-2 hover:bg-gray-100" href="#">Hapus Permintaan</a>
-                    </li>
-                </ul>
-            </div>
+                    <div class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow" id="dropdown">
+                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
+                            <li>
+                                <a class="block px-4 py-2 hover:bg-gray-100" data-modal-target="tanggapan-modal"
+                                    data-modal-toggle="tanggapan-modal" href="#" role="button">Tanggapan</a>
+                            </li>
+                        </ul>
+                    </div>
+                @endif
+            @endrole
+
+            @role('employee')
+                <button
+                    class="inline-flex items-center rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                    id="dropdownDefaultButton" data-dropdown-toggle="dropdown" type="button">Aksi <svg class="ms-2 h-2.5 w-2.5"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+
+                @if ($benefit->status == 'reject')
+                    <div class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow" id="dropdown">
+                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
+                            <li>
+                                <a class="block px-4 py-2 hover:bg-gray-100" href="{{ route('request-edit', $benefit) }}">Edit
+                                    Permintaan</a>
+                            </li>
+                            <li>
+                                <a class="block px-4 py-2 hover:bg-gray-100" href="#">Hapus Permintaan</a>
+                            </li>
+                        </ul>
+                    </div>
+                @endif
+            @endrole
         </div>
 
     </div>
@@ -65,11 +90,12 @@
                                 [$color, $text] = match ($status) {
                                     'pending' => ['text-purple-800', 'Menunggu'],
                                     'progress' => ['text-yellow-800', 'Proses'],
+                                    'done' => ['text-green-800', 'Selesai'],
                                     'reject' => ['text-red-800', 'Ditolak'],
                                     default => ['text-gray-800', 'Unknown'],
                                 };
                             @endphp
-                            <span class="{{ $color }} font-normal">{{ $text }}</span>
+                            <span class="{{ $color }} font-medium">{{ $text }}</span>
                         </div>
                     </li>
                     <li class="w-full rounded-t-lg border-b border-gray-200 py-2">
@@ -126,8 +152,8 @@
                     <span class="sr-only">Close modal</span>
                 </button>
                 <div class="p-4 text-center md:p-5">
-                    <svg class="mx-auto mb-4 h-12 w-12 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 20 20">
+                    <svg class="mx-auto mb-4 h-12 w-12 text-gray-400" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>

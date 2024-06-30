@@ -27,7 +27,7 @@ class BenefitRequest extends FormRequest
             'type' => ['required', 'string', Rule::in(['kesehatan', 'bencana', 'transportasi', 'jabatan', 'makanan'])],
             'amount' => ['required', 'string', 'max:30'],
             'message' => ['required', 'string', 'max:100'],
-            'file' => ['required', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'file' => ['required_without:benefit_id', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 }

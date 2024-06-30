@@ -86,7 +86,8 @@
                                             class="{{ $color }} me-2 rounded px-2.5 py-0.5 text-xs font-medium text-white">{{ ucfirst($text) }}</span>
                                     </td>
                                     <td class="flex items-center px-6 py-4">
-                                        <a class="font-medium text-blue-600 hover:underline" href="#">Detail</a>
+                                        <a class="font-medium text-blue-600 hover:underline"
+                                            href="{{ route('benefit.show', $benefit) }}">Detail</a>
                                     </td>
                                 </tr>
                             @endforeach

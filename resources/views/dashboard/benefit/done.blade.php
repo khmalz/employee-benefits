@@ -262,7 +262,7 @@
                                             </td>
                                             <td class="flex items-center px-6 py-4">
                                                 <a class="font-medium text-blue-600 hover:underline"
-                                                    href="#">Detail</a>
+                                                    href="{{ route('benefit.show', $benefit) }}">Detail</a>
                                             </td>
                                         </tr>
                                     @endforeach

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Benefit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\BenefitRequest;
 use Illuminate\Validation\ValidationException;
 
@@ -98,9 +99,31 @@ class BenefitController extends Controller
         //
     }
 
-    public function update(Request $request, Benefit $benefit)
+    public function update(BenefitRequest $request, Benefit $benefit)
     {
-        //
+        $data = $request->validated();
+
+        $employeeBenefit = \App\Models\Employee::where('nik', $request->employeeNIK)->value($request->type);
+
+        $data['amount'] = str_replace(['.', ','], '', $data['amount']);
+
+        if ($data['amount'] > $employeeBenefit) {
+            throw ValidationException::withMessages([
+                'amount' => 'The benefit amount exceeds the allowed limit.',
+            ]);
+        }
+
+        if ($request->file('file')) {
+            File::delete(public_path("images/$benefit->file"));
+
+            $data['file'] = $request->file('file')->store('bukti');
+        }
+
+        $data['status'] = 'pending';
+
+        $benefit->update($data);
+
+        return to_route('request')->with('success', 'Berhasil mengedit permintaan tunjangan');
     }
 
     public function destroy(Benefit $benefit)
