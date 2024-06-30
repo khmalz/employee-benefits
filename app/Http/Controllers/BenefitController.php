@@ -54,7 +54,7 @@ class BenefitController extends Controller
             ->when($request->has('jenis') && !empty($request->jenis), function ($query) use ($request) {
                 return $query->whereType($request->jenis);
             })
-            ->paginate(1);
+            ->paginate(10);
 
         return view("dashboard.benefit.done", compact('benefits'));
     }

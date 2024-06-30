@@ -39,9 +39,7 @@
             <div class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0"
                 id="ekspor-modal" aria-hidden="true" tabindex="-1">
                 <div class="relative max-h-full w-full max-w-xl p-4">
-                    <!-- Modal content -->
                     <div class="relative rounded-lg bg-white shadow">
-                        <!-- Modal header -->
                         <div class="flex items-center justify-between rounded-t border-b p-4 md:p-5">
                             <h3 class="text-xl font-semibold text-gray-900">
                                 Ekspor ke PDF
@@ -57,9 +55,9 @@
                                 <span class="sr-only">Close modal</span>
                             </button>
                         </div>
-                        <!-- Modal body -->
                         <div class="space-y-4 p-4 md:p-5">
-                            <form class="w-full">
+                            <form class="w-full" action="{{ route('benefit.pdf.done') }}" method="POST">
+                                @csrf
                                 <div class="mb-2">
                                     <label class="mb-2 block text-sm font-medium text-gray-900" for="started_at">Dari
                                         Tanggal
@@ -100,11 +98,17 @@
                                 </div>
                             </form>
                         </div>
-                        <!-- Modal footer -->
+
+                        <form class="hidden" id="export-all-data" action="{{ route('benefit.pdf.done') }}" method="POST">
+                            @csrf
+                            <input name="all" type="hidden" value="all">
+                        </form>
+
                         <div class="flex items-center justify-between rounded-b border-t border-gray-200 p-4 md:p-5">
                             <button
                                 class="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                                type="button">Semua Data</button>
+                                type="button" onclick="document.getElementById('export-all-data').submit()">Semua
+                                Data</button>
                             <button
                                 class="rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
                                 type="button">Pencarian</button>
