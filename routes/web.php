@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('role:employee')->group(function () {
-        Route::resource('benefit', BenefitController::class)->except('index', 'show');
+        Route::resource('benefit', BenefitController::class)->except('index', 'show', 'create', 'edit');
         Route::get('/request-benefit', [RequestBenefitController::class, 'create'])->name('request');
         Route::get('/edit-request-benefit/{benefit}', [RequestBenefitController::class, 'edit'])->name('request-edit');
         Route::get('/history-benefit', HistoryBenefitController::class)->name('benefit.history');

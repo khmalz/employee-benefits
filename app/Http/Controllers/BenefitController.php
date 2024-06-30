@@ -59,11 +59,6 @@ class BenefitController extends Controller
         return view("dashboard.benefit.done", compact('benefits'));
     }
 
-    public function create()
-    {
-        //  
-    }
-
     public function store(BenefitRequest $request)
     {
         $data = $request->validated();
@@ -92,11 +87,6 @@ class BenefitController extends Controller
         $benefit->load('employee.user');
 
         return view('dashboard.benefit.detail', compact('benefit'));
-    }
-
-    public function edit(Benefit $benefit)
-    {
-        //
     }
 
     public function update(BenefitRequest $request, Benefit $benefit)
@@ -128,6 +118,9 @@ class BenefitController extends Controller
 
     public function destroy(Benefit $benefit)
     {
-        //
+        File::delete(public_path("images/$benefit->file"));
+        $benefit->delete();
+
+        return to_route("request")->with("success", "Berhasil menghapus permintaan tunjangan");
     }
 }
