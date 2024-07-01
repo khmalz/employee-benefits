@@ -19,7 +19,7 @@ class MixCaseULID
       $mixCaseUlid = implode('', $mixCaseChars);
 
       // Ambil hanya 10 karakter, melewatkan 5 karakter pertama
-      $result = substr($mixCaseUlid, 5, 11);
+      $result = strtoupper(substr($mixCaseUlid, 5, 11));
 
       return $result;
    }
