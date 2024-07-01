@@ -8,6 +8,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class PDFBenefitController extends Controller
 {
+    public function index(Benefit $benefit)
+    {
+        $pdf = Pdf::loadView('pdf.benefit', compact('benefit'));
+        return $pdf->stream('tunjangan_' . $benefit->code . '.pdf');
+    }
+
     public function done(Request $request)
     {
         $benefits = Benefit::where('status', Benefit::SELESAI)

@@ -161,11 +161,16 @@
                             d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
                     <h3 class="mb-5 text-lg font-normal text-gray-500">Ekspor Data?</h3>
-                    <button
-                        class="inline-flex items-center rounded-lg bg-sky-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-4 focus:ring-sky-300"
-                        data-modal-hide="export-pdf-modal" type="button">
-                        Ya
-                    </button>
+
+                    <form class="inline-block" action="{{ route('benefit.pdf', $benefit) }}" method="POST">
+                        @csrf
+
+                        <button
+                            class="inline-flex items-center rounded-lg bg-sky-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-4 focus:ring-sky-300"
+                            type="submit">
+                            Ya
+                        </button>
+                    </form>
                     <button
                         class="ms-3 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100"
                         data-modal-hide="export-pdf-modal" type="button">Tidak</button>

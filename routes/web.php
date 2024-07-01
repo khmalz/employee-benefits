@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('response', ResponseController::class)->except('create', 'store');
         Route::post('/response/{benefit}', [ResponseController::class, 'store'])->name('response.store');
 
-        Route::post('/beneft/sudah/pdf', [PDFBenefitController::class, 'done'])->name('benefit.pdf.done');
+        Route::post('/benefit/sudah/pdf', [PDFBenefitController::class, 'done'])->name('benefit.pdf.done');
     });
 
     Route::middleware('role:employee')->group(function () {
@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
         });
     });
 
+    Route::post('/benefit/{benefit}/pdf', [PDFBenefitController::class, 'index'])->name('benefit.pdf');
     Route::get('/benefit/{benefit}', [BenefitController::class, 'show'])->name('benefit.show');
 });
 
