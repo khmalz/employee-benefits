@@ -10,10 +10,16 @@ class PDFBenefitController extends Controller
 {
     public function done(Request $request)
     {
-        $benefits = Benefit::whereStatus(Benefit::SELESAI)->oldest()->get();
+        $benefits = Benefit::where('status', Benefit::SELESAI)
+            ->when($request->has("all"), function ($query) {
+                $query;
+            }, function ($query) use ($request) {
+                $query->whereBetweenDate([$request->started_at, $request->ended_at]);
+            })
+            ->oldest()->get();
 
         if ($benefits->isEmpty()) {
-            return back()->with('kosong', 'Maaf, Tunjangan Yang Ingin di Eksport Tidak Ada');
+            return back()->with('fail', 'Tunjangan Yang Ingin di Eksport Tidak Ada');
         }
 
         $totalBenefit = $benefits->sum('amount');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Helpers\MixCaseULID;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -75,5 +76,13 @@ class Benefit extends Model
     public function scopeWhereType(Builder $query, string $type)
     {
         return $query->where('type', $type);
+    }
+
+    public function scopeWhereBetweenDate(Builder $query, array $dates)
+    {
+        return $query->whereBetween('created_at', [
+            Carbon::createFromFormat('d-m-Y', $dates[0])->startOfDay(),
+            Carbon::createFromFormat('d-m-Y', $dates[1])->endOfDay()
+        ]);
     }
 }

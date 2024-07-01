@@ -2,6 +2,30 @@
 
 @section('content')
     <div>
+        @if (session()->has('fail'))
+            <div class="mb-4 flex items-center rounded-lg bg-red-50 p-4 text-red-800" id="alert-2" role="alert">
+                <svg class="h-4 w-4 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                    viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Info</span>
+                <div class="ms-3 text-sm font-medium">
+                    {{ session('fail') }}
+                </div>
+                <button
+                    class="-mx-1.5 -my-1.5 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-red-50 p-1.5 text-red-500 hover:bg-red-200 focus:ring-2 focus:ring-red-400"
+                    data-dismiss-target="#alert-2" type="button" aria-label="Close">
+                    <span class="sr-only">Close</span>
+                    <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                </button>
+            </div>
+        @endif
+
         <div class="mb-4 flex w-full items-center justify-between">
             <div>
                 <button
@@ -55,9 +79,9 @@
                                 <span class="sr-only">Close modal</span>
                             </button>
                         </div>
-                        <div class="space-y-4 p-4 md:p-5">
-                            <form class="w-full" action="{{ route('benefit.pdf.done') }}" method="POST">
-                                @csrf
+                        <form id="export-data" action="{{ route('benefit.pdf.done') }}" method="POST">
+                            @csrf
+                            <div class="p-4 md:p-5">
                                 <div class="mb-2">
                                     <label class="mb-2 block text-sm font-medium text-gray-900" for="started_at">Dari
                                         Tanggal
@@ -74,7 +98,7 @@
                                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
                                             id="inp-started_at" name="started_at" type="text"
                                             value="{{ old('started_at') }}" autocomplete="off" datepicker-buttons datepicker
-                                            datepicker-autohide placeholder="Pilih dari tanggal">
+                                            datepicker-autohide placeholder="Pilih dari tanggal" required>
                                     </div>
                                 </div>
                                 <div class="mb-2">
@@ -84,35 +108,37 @@
                                     <div class="relative">
                                         <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
                                             <svg class="h-4 w-4 text-gray-500" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 20 20">
                                                 <path
                                                     d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                             </svg>
                                         </div>
                                         <input
                                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
-                                            id="inp-ended_at" name="ended_at" type="text" value="{{ old('ended_at') }}"
-                                            autocomplete="off" datepicker-buttons datepicker datepicker-autohide
-                                            placeholder="Pilih sampai tanggal">
+                                            id="inp-ended_at" name="ended_at" type="text"
+                                            value="{{ old('ended_at') }}" required autocomplete="off" datepicker-buttons
+                                            datepicker datepicker-autohide placeholder="Pilih sampai tanggal">
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
 
-                        <form class="hidden" id="export-all-data" action="{{ route('benefit.pdf.done') }}" method="POST">
+                            <div class="flex items-center justify-between rounded-b border-t border-gray-200 p-4 md:p-5">
+                                <button
+                                    class="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                                    type="button" onclick="document.getElementById('export-all-data').submit()">Semua
+                                    Data</button>
+                                <button
+                                    class="rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
+                                    type="submit">Pencarian</button>
+                            </div>
+                        </form>
+
+                        <form class="hidden" id="export-all-data" action="{{ route('benefit.pdf.done') }}"
+                            method="POST">
                             @csrf
                             <input name="all" type="hidden" value="all">
                         </form>
-
-                        <div class="flex items-center justify-between rounded-b border-t border-gray-200 p-4 md:p-5">
-                            <button
-                                class="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                                type="button" onclick="document.getElementById('export-all-data').submit()">Semua
-                                Data</button>
-                            <button
-                                class="rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
-                                type="button">Pencarian</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -299,6 +325,7 @@
                 autohide: true,
                 clearBtn: true,
                 todayBtn: true,
+                todayBtnMode: 1,
                 format: "dd-mm-yyyy",
             };
 
