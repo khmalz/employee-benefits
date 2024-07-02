@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
             if ($request->user()->hasRole('admin')) {
                 return route('employee.index');
             } elseif ($request->user()->hasRole('employee')) {
-                return route('benefit.index');
+                return route('request');
             }
 
             return '/';

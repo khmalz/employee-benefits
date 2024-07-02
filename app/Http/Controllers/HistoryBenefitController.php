@@ -37,6 +37,7 @@ class HistoryBenefitController extends Controller
             ->when($request->has('jenis') && !empty($request->jenis), function ($query) use ($request) {
                 return $query->whereType($request->jenis);
             })
+            ->oldest()
             ->paginate(1);
 
         return view('dashboard.employee.history-benefit', compact('benefits'));
