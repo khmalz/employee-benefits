@@ -6,6 +6,7 @@ use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\HistoryBenefitController;
 use App\Http\Controllers\RequestBenefitController;
 use App\Http\Controllers\Admin\EmployeeControlller;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PDFBenefitController;
 
 Route::get('/', function () {
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
         Route::get('employee/benefits/{employee}', function (\App\Models\Employee $employee) {
             return $employee->only('nik', 'kesehatan', 'bencana', 'transportasi', 'jabatan', 'makanan');
         });
+
+        Route::get('/notification', [NotificationController::class, 'index'])->name('notification.index');
     });
 
     Route::post('/benefit/{benefit}/pdf', [PDFBenefitController::class, 'index'])->name('benefit.pdf');
