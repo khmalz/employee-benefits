@@ -35,7 +35,7 @@
                     <li class="w-full rounded-t-lg py-2">
                         <div class="flex justify-between">
                             <span class="">Tanggal Masuk</span>
-                            <span class="font-normal">{{ $employee->tanggal_masuk->format('d F Y') }}</span>
+                            <span class="font-normal">{{ $employee->tanggal_masuk->translatedFormat('d F Y') }}</span>
                         </div>
                     </li>
                     <hr class="my-2 border-gray-400/80" />

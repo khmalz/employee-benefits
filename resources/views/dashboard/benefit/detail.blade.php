@@ -104,7 +104,7 @@
                     <li class="w-full rounded-t-lg border-b border-gray-200 py-2">
                         <div class="flex justify-between">
                             <span class="">Tanggal</span>
-                            <span class="font-normal">{{ $benefit->created_at->format('d F Y') }}</span>
+                            <span class="font-normal">{{ $benefit->created_at->translatedFormat('d F Y') }}</span>
                         </div>
                     </li>
                     <li class="w-full rounded-t-lg border-b border-gray-200 py-2">
@@ -243,7 +243,7 @@
                         @if ($isBenefitExceededLimit || session()->has('error'))
                             <div class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
                                 role="alert">
-                                {{ session('error', 'The benefit amount is exceeds the allowed limit.') }}
+                                {{ session('error', 'Jumlah tunjangan melebihi batas yang diizinkan.') }}
                             </div>
                         @endif
 

@@ -129,7 +129,7 @@
                     <li class="list-group-item mt-2">
                         <div class="d-sm-flex justify-content-between">
                             <p class="fw-bold">Tanggal</p>
-                            <p class="text-capitalize">{{ $benefit->created_at->format('d F Y') }}</p>
+                            <p class="text-capitalize">{{ $benefit->created_at->translatedFormat('d F Y') }}</p>
                         </div>
                     </li>
                     <li class="list-group-item mt-2">

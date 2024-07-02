@@ -73,7 +73,7 @@
                             <input
                                 class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
                                 id="inp-started_at" name="tanggal_masuk"
-                                data-date="{{ old('tanggal_masuk', $employee->tanggal_masuk->format('d-m-Y')) }}"
+                                data-date="{{ old('tanggal_masuk', $employee->tanggal_masuk->translatedFormat('d-m-Y')) }}"
                                 type="text" value="{{ old('tanggal_masuk') }}" autocomplete="off"
                                 datepicker-autoselect-today datepicker-buttons datepicker datepicker-autohide
                                 placeholder="Pilih Tanggal">

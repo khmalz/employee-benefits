@@ -35,7 +35,8 @@ class BenefitController extends Controller
             ->when($request->has('jenis') && !empty($request->jenis), function ($query) use ($request) {
                 return $query->whereType($request->jenis);
             })
-            ->paginate(10);
+            ->oldest()
+            ->paginate(1);
 
         return view("dashboard.benefit.list", compact('benefits'));
     }
@@ -54,6 +55,7 @@ class BenefitController extends Controller
             ->when($request->has('jenis') && !empty($request->jenis), function ($query) use ($request) {
                 return $query->whereType($request->jenis);
             })
+            ->oldest()
             ->paginate(10);
 
         return view("dashboard.benefit.done", compact('benefits'));
@@ -69,7 +71,7 @@ class BenefitController extends Controller
 
         if ($data['amount'] > $employeeBenefit) {
             throw ValidationException::withMessages([
-                'amount' => 'The benefit amount exceeds the allowed limit.',
+                'amount' => 'Jumlah tunjangan melebihi batas yang diizinkan.',
             ]);
         }
 
@@ -101,7 +103,7 @@ class BenefitController extends Controller
 
         if ($data['amount'] > $employeeBenefit) {
             throw ValidationException::withMessages([
-                'amount' => 'The benefit amount exceeds the allowed limit.',
+                'amount' => 'Jumlah tunjangan melebihi batas yang diizinkan.',
             ]);
         }
 

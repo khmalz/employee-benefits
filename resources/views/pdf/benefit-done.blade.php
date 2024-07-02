@@ -58,7 +58,7 @@
             <tr class="content">
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $benefit->employee->user->name }}</td>
-                <td>{{ $benefit->created_at->format('d M Y') }}</td>
+                <td>{{ $benefit->created_at->translatedFormat('d M Y') }}</td>
                 <td>{{ $benefit->code }}</td>
                 <td style="text-transform: capitalize">{{ str_replace('_', ' ', $benefit->type) }}</td>
                 <td>Rp. {{ number_format($benefit->amount, 0, '', '.') }}</td>

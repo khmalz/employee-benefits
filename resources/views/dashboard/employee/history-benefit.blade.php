@@ -150,7 +150,7 @@
                             @foreach ($benefits as $benefit)
                                 <tr class="border-b bg-white hover:bg-gray-50">
                                     <th class="whitespace-nowrap px-6 py-4 font-medium text-gray-900" scope="row">
-                                        {{ $benefit->created_at->format('d F Y') }}
+                                        {{ $benefit->created_at->translatedFormat('d F Y') }}
                                     </th>
                                     <td class="px-6 py-4">
                                         {{ $benefit->code }}
