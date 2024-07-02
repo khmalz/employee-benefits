@@ -52,11 +52,8 @@
                             class="decorated block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
                             id="status_employee" name="status">
                             <option selected disabled>Pilih status</option>
-                            <option value="kontrak" {{ old('status', $employee->status) == 'kontrak' ? 'selected' : null }}>
-                                Kontrak</option>
-                            <option value="permanen"
-                                {{ old('status', $employee->status) == 'permanen' ? 'selected' : null }}>Permanen
-                            </option>
+                            <option value="kontrak" @selected(old('status', $employee->status) == 'kontrak')>Kontrak</option>
+                            <option value="permanen" @selected(old('status', $employee->status) == 'permanen')>Permanen</option>
                         </select>
                         @error('status')
                             <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>

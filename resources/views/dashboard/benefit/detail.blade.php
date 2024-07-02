@@ -237,7 +237,6 @@
                         <span class="sr-only">Close modal</span>
                     </button>
                 </div>
-                <!-- Modal body -->
                 <form class="w-full" method="POST" action="{{ route('response.store', $benefit) }}">
                     @csrf
                     <div class="space-y-4 p-4 md:p-5">
@@ -247,13 +246,11 @@
                                 class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                                 id="status" name="status">
                                 <option selected disabled>Pilih status</option>
-                                <option value="reject" {{ old('status') == 'reject' ? 'selected' : null }}
-                                    {{ $benefit->status == 'reject' ? 'disabled' : null }}>Menolak
+                                <option value="reject" @selected(old('status') == 'reject') @disabled($benefit->status == 'reject')>Menolak
                                 </option>
-                                <option value="progress" {{ old('status') == 'progress' ? 'selected' : null }}
-                                    {{ $benefit->status == 'progress' ? 'disabled' : null }}>Proses
+                                <option value="progress" @selected(old('status') == 'progress') @disabled($benefit->status == 'progress')>Proses
                                 </option>
-                                <option value="done" {{ old('status') == 'done' ? 'selected' : null }}>Selesai
+                                <option value="done" @selected(old('status') == 'done')>Selesai
                                 </option>
                             </select>
                         </div>

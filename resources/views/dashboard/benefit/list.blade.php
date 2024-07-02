@@ -97,17 +97,17 @@
                                         class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                                         id="jenis" name="jenis">
                                         <option value="" selected>Semua</option>
-                                        <option value="kesehatan" {{ request('jenis') == 'kesehatan' ? 'selected' : '' }}>
+                                        <option value="kesehatan" @selected(request('jenis') == 'kesehatan')>
                                             Kesehatan
                                         </option>
-                                        <option value="pernikahan" {{ request('jenis') == 'pernikahan' ? 'selected' : '' }}>
-                                            Pernikahan
-                                        </option>
-                                        <option value="bencana" {{ request('jenis') == 'bencana' ? 'selected' : '' }}>
+                                        <option value="bencana" @selected(request('jenis') == 'bencana')>
                                             Bencana</option>
-                                        <option value="kematian" {{ request('jenis') == 'kematian' ? 'selected' : '' }}>
-                                            Kematian
-                                        </option>
+                                        <option value="transportasi" @selected(request('jenis') == 'transportasi')>
+                                            Transportasi</option>
+                                        <option value="jabatan" @selected(request('jenis') == 'jabatan')>
+                                            Jabatan</option>
+                                        <option value="makanan" @selected(request('jenis') == 'makanan')>
+                                            Makanan</option>
                                     </select>
                                 </div>
                             </div>
@@ -129,13 +129,10 @@
                     <select
                         class="appearance-none border-0 border-b-2 border-blue-500 !bg-none py-2.5 text-sm text-blue-500 focus:outline-none focus:ring-0"
                         id="status" name="status" onchange="this.form.submit()">
-                        <option class="text-gray-900" value="menunggu"
-                            {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
-                        <option class="text-gray-900" value="proses"
-                            {{ request('status') == 'proses' ? 'selected' : '' }}>
+                        <option class="text-gray-900" value="menunggu" @selected(request('status') == 'menunggu')>Menunggu</option>
+                        <option class="text-gray-900" value="proses" @selected(request('status') == 'proses')>
                             Proses</option>
-                        <option class="text-gray-900" value="ditolak"
-                            {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                        <option class="text-gray-900" value="ditolak" @selected(request('status') == 'ditolak')>Ditolak</option>
                     </select>
 
                     @if (request('nama'))

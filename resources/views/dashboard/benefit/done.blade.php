@@ -201,18 +201,17 @@
                                         class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                                         id="jenis" name="jenis">
                                         <option value="" selected>Semua</option>
-                                        <option value="kesehatan" {{ request('jenis') == 'kesehatan' ? 'selected' : '' }}>
+                                        <option value="kesehatan" @selected(request('jenis') == 'kesehatan')>
                                             Kesehatan
                                         </option>
-                                        <option value="pernikahan"
-                                            {{ request('jenis') == 'pernikahan' ? 'selected' : '' }}>
-                                            Pernikahan
-                                        </option>
-                                        <option value="bencana" {{ request('jenis') == 'bencana' ? 'selected' : '' }}>
+                                        <option value="bencana" @selected(request('jenis') == 'bencana')>
                                             Bencana</option>
-                                        <option value="kematian" {{ request('jenis') == 'kematian' ? 'selected' : '' }}>
-                                            Kematian
-                                        </option>
+                                        <option value="transportasi" @selected(request('jenis') == 'transportasi')>
+                                            Transportasi</option>
+                                        <option value="jabatan" @selected(request('jenis') == 'jabatan')>
+                                            Jabatan</option>
+                                        <option value="makanan" @selected(request('jenis') == 'makanan')>
+                                            Makanan</option>
                                     </select>
                                 </div>
                             </div>

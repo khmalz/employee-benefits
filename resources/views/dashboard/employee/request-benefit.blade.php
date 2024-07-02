@@ -120,15 +120,18 @@
                             class="decorated block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500"
                             id="jenis_tunjangan" name="type">
                             <option selected disabled>Pilih Jenis</option>
-                            <option value="kesehatan" {{ old('type') == 'kesehatan' ? 'selected' : null }}>Kesehatan
+                            <option value="kesehatan" @selected(old('type') == 'kesehatan')>
+                                Kesehatan
                             </option>
-                            <option value="bencana" {{ old('type') == 'bencana' ? 'selected' : null }}>Bencana</option>
-                            <option value="transportasi" {{ old('type') == 'transportasi' ? 'selected' : null }}>
+                            <option value="bencana" @selected(old('type') == 'bencana')>
+                                Bencana</option>
+                            <option value="transportasi" @selected(old('type') == 'transportasi')>
                                 Transportasi</option>
-                            <option value="jabatan" {{ old('type') == 'jabatan' ? 'selected' : null }}>Jabatan</option>
-                            <option value="makanan" {{ old('type') == 'makanan' ? 'selected' : null }}>Makanan</option>
+                            <option value="jabatan" @selected(old('type') == 'jabatan')>
+                                Jabatan</option>
+                            <option value="makanan" @selected(old('type') == 'makanan')>
+                                Makanan</option>
                         </select>
-
                         @error('type')
                             <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
                         @enderror
