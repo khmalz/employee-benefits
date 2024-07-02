@@ -240,6 +240,13 @@
                 <form class="w-full" method="POST" action="{{ route('response.store', $benefit) }}">
                     @csrf
                     <div class="space-y-4 p-4 md:p-5">
+                        @if ($isBenefitExceededLimit || session()->has('error'))
+                            <div class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
+                                role="alert">
+                                {{ session('error', 'The benefit amount is exceeds the allowed limit.') }}
+                            </div>
+                        @endif
+
                         <div class="mb-5">
                             <label class="mb-2 block text-sm font-medium text-gray-900" for="status">Status</label>
                             <select
@@ -248,9 +255,9 @@
                                 <option selected disabled>Pilih status</option>
                                 <option value="reject" @selected(old('status') == 'reject') @disabled($benefit->status == 'reject')>Menolak
                                 </option>
-                                <option value="progress" @selected(old('status') == 'progress') @disabled($benefit->status == 'progress')>Proses
+                                <option value="progress" @selected(old('status') == 'progress') @disabled($benefit->status == 'progress' || $isBenefitExceededLimit)>Proses
                                 </option>
-                                <option value="done" @selected(old('status') == 'done')>Selesai
+                                <option value="done" @selected(old('status') == 'done') @disabled($isBenefitExceededLimit)>Selesai
                                 </option>
                             </select>
                         </div>

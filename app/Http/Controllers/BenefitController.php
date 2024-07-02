@@ -35,7 +35,7 @@ class BenefitController extends Controller
             ->when($request->has('jenis') && !empty($request->jenis), function ($query) use ($request) {
                 return $query->whereType($request->jenis);
             })
-            ->paginate(1);
+            ->paginate(10);
 
         return view("dashboard.benefit.list", compact('benefits'));
     }
@@ -86,7 +86,9 @@ class BenefitController extends Controller
     {
         $benefit->load('employee.user');
 
-        return view('dashboard.benefit.detail', compact('benefit'));
+        $isBenefitExceededLimit = $benefit->amount > $benefit->employee->{$benefit->type};
+
+        return view('dashboard.benefit.detail', compact('benefit', 'isBenefitExceededLimit'));
     }
 
     public function update(BenefitRequest $request, Benefit $benefit)
