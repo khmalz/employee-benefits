@@ -22,45 +22,70 @@
                         <path
                             d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z" />
                     </svg>
-                    <div class="absolute -top-0.5 start-2.5 block h-3 w-3 rounded-full border-2 border-white bg-red-500">
-                    </div>
+                    @if ($unreadNotifications->isNotEmpty())
+                        <div
+                            class="absolute -top-0.5 start-2.5 block h-3 w-3 rounded-full border-2 border-white bg-red-500">
+                        </div>
+                    @endif
                 </button>
 
                 <!-- Notification menu -->
                 <div class="z-20 hidden w-full max-w-sm divide-y divide-gray-100 rounded-lg bg-white shadow"
                     id="dropdownNotification" aria-labelledby="dropdownNotificationButton">
                     <div class="block rounded-t-lg bg-gray-50 px-4 py-2 text-center font-medium text-gray-700">
-                        Notifications
+                        Notifikasi
                     </div>
                     <div class="divide-y divide-gray-100">
-                        <a class="flex space-x-1 px-4 py-3 hover:bg-gray-100" href="#">
-                            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-red-300/80">
-                                <svg class="h-5 w-5 text-red-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M4 5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H4Zm0 6h16v6H4v-6Z"
-                                        clip-rule="evenodd" />
-                                    <path fill-rule="evenodd"
-                                        d="M5 14a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Zm5 0a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2h-5a1 1 0 0 1-1-1Z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                        @forelse ($unreadNotifications as $notification)
+                            @php
+                                $status = strtolower($notification->data['status']);
+                                [$bgColor, $iconColor, $statusText, $additionalText] = match ($status) {
+                                    'progress' => ['bg-yellow-300/80', 'text-yellow-600', 'diproses', 'sedang'],
+                                    'done' => ['bg-green-300/80', 'text-green-600', 'selesai', 'telah'],
+                                    'reject' => ['bg-red-300/80', 'text-red-600', 'ditolak', 'telah'],
+                                    default => ['bg-gray-300/80', 'text-gray-600', 'diketahui', 'tidak'],
+                                };
+                            @endphp
+                            <div class="flex space-x-1 px-4 py-3 hover:bg-gray-100">
+                                <div class="{{ $bgColor }} flex h-8 w-8 items-center justify-center rounded-full">
+                                    <svg class="{{ $iconColor }} h-5 w-5" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd"
+                                            d="M4 5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H4Zm0 6h16v6H4v-6Z"
+                                            clip-rule="evenodd" />
+                                        <path fill-rule="evenodd"
+                                            d="M5 14a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Zm5 0a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2h-5a1 1 0 0 1-1-1Z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div class="w-full ps-2">
+                                    <div class="mb-1.5 text-sm text-gray-500">Permintaan <span class="font-medium"
+                                            href="{{ route('benefit.show', $notification->data['code']) }}">tunjangan
+                                            {{ $notification->data['type'] }}</span> anda {{ $additionalText }} <span
+                                            class="{{ $iconColor }}">{{ $statusText }}</span>
+                                    </div>
+                                    <div class="text-xs text-blue-600"> {{ $notification->created_at->diffForHumans() }}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="w-full ps-2">
-                                <div class="mb-1.5 text-sm text-gray-500">Permintaan tunjangan transportasi anda telah <span
-                                        class="text-red-800">ditolak</span></div>
-                                <div class="text-xs text-blue-600">a few moments ago</div>
+                        @empty
+                            <div class="flex space-x-1 px-4 py-3 hover:bg-gray-100">
+                                <div class="w-full ps-2 text-center">
+                                    <div class="mb-1.5 text-sm text-gray-500">Tidak ada notifikasi</div>
+                                </div>
                             </div>
-                        </a>
+                        @endforelse
                     </div>
                     <a class="block rounded-b-lg bg-gray-50 py-2 text-center text-sm font-medium text-gray-900 hover:bg-gray-100"
-                        href="#">
+                        href="{{ route('notification.index') }}">
                         <div class="inline-flex items-center">
                             <svg class="me-2 h-4 w-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor" viewBox="0 0 20 14">
                                 <path
                                     d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
                             </svg>
-                            View all
+                            Lihat semua
                         </div>
                     </a>
                 </div>

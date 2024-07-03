@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
-use Illuminate\Http\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +29,17 @@ class AppServiceProvider extends ServiceProvider
             }
 
             return '/';
+        });
+
+        view()->composer('dashboard.layouts.navbar', function ($view) {
+            $user = request()->user();
+
+            if ($user && $user->hasRole('employee')) {
+                $unreadNotifications = $user->unreadNotifications()->get();
+                $view->with('unreadNotifications', $unreadNotifications);
+            } else {
+                $view->with('unreadNotifications', collect());
+            }
         });
     }
 }
