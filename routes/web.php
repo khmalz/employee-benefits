@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::get('/notification', [NotificationController::class, 'index'])->name('notification.index');
+        Route::post('notification/read/{notifications?}', [NotificationController::class, 'read'])->name('notification.read');
     });
 
     Route::post('/benefit/{benefit}/pdf', [PDFBenefitController::class, 'index'])->name('benefit.pdf');

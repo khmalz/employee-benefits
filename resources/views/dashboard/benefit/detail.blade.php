@@ -251,7 +251,7 @@
                             <label class="mb-2 block text-sm font-medium text-gray-900" for="status">Status</label>
                             <select
                                 class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                                id="status" name="status">
+                                id="status" name="status" required>
                                 <option selected disabled>Pilih status</option>
                                 <option value="reject" @selected(old('status') == 'reject') @disabled($benefit->status == 'reject')>Menolak
                                 </option>
@@ -265,7 +265,7 @@
                             <label class="mb-2 block text-sm font-medium text-gray-900" for="pesan">Pesan</label>
                             <textarea
                                 class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                                id="pesan" name="message" rows="2" placeholder="Tulis pesan">{{ old('message') }}</textarea>
+                                id="pesan" name="message" rows="2" placeholder="Tulis pesan" required>{{ old('message') }}</textarea>
                             @error('message')
                                 <p class="mt-2 text-sm font-semibold text-rose-500">{{ $message }}</p>
                             @enderror
