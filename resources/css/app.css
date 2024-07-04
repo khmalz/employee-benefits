@@ -25,3 +25,7 @@
         @apply bg-green-700 text-white dark:bg-green-600;
     }
 }
+
+.initial-toastify {
+    @apply translate-y-[-150%];
+}
