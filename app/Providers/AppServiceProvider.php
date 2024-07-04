@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
             return '/';
         });
 
-        view()->composer('dashboard.layouts.navbar', function ($view) {
+        view()->composer(['dashboard.layouts.navbar', 'dashboard.notification.index'], function ($view) {
             $user = request()->user();
 
             if ($user && $user->hasRole('employee')) {

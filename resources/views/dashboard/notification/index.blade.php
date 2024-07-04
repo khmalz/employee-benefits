@@ -3,7 +3,7 @@
 @section('content')
     <div>
         @forelse ($groupedNotifications as $label => $notifications)
-            @if ($loop->first)
+            @if ($loop->first && $unreadNotifications->isNotEmpty())
                 <div class="w-full text-end">
                     <form method="POST" action="{{ route('notification.read') }}">
                         @csrf
