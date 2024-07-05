@@ -6,9 +6,9 @@ use Carbon\Carbon;
 use App\Helpers\MixCaseULID;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Benefit extends Model
 {
@@ -51,9 +51,9 @@ class Benefit extends Model
         return $this->belongsTo(Employee::class, 'employee_id');
     }
 
-    public function response(): HasMany
+    public function response(): HasOne
     {
-        return $this->hasMany(Response::class, 'benefit_id');
+        return $this->hasOne(Response::class, 'benefit_id');
     }
 
     public function scopeWhereStatus(Builder $query, string $status)

@@ -35,7 +35,7 @@
 
             @role('employee')
                 <li>
-                    <a class="{{ request()->routeIs('request') ? 'text-blue-500' : 'text-gray-900' }} group flex items-center rounded-lg p-2 hover:bg-gray-100"
+                    <a class="{{ request()->routeIs('request*') ? 'text-blue-500' : 'text-gray-900' }} group flex items-center rounded-lg p-2 hover:bg-gray-100"
                         href="{{ route('request') }}">
                         <svg class="h-5 w-5 flex-shrink-0 transition duration-75" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"

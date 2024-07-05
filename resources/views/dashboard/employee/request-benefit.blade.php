@@ -26,6 +26,12 @@
             </div>
         @endif
 
+        @if (session()->has('error'))
+            <div class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800" id="password_berhasil" role="alert">
+                {{ session('error') }}
+            </div>
+        @endif
+
         @if (session()->has('success'))
             <div class="mb-4 rounded-lg bg-green-50 p-4 text-sm text-green-800" id="password_berhasil" role="alert">
                 {{ session('success') }}
