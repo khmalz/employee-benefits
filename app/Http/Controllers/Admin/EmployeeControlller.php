@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
 use App\Models\Employee;
+use App\DTO\EmployeeData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
+use App\Actions\Employee\CreateEmployee;
+use App\Actions\Employee\DeleteEmployee;
+use App\Actions\Employee\UpdateEmployee;
 
 class EmployeeControlller extends Controller
 {
@@ -30,15 +33,12 @@ class EmployeeControlller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(EmployeeRequest $request)
+    public function store(EmployeeRequest $request, CreateEmployee $action)
     {
         $data = $request->validated();
-        foreach (['kesehatan', 'bencana', 'transportasi', 'jabatan', 'makanan'] as $key) {
-            $data[$key] = str_replace(['.', ','], '', $data[$key]);
-        }
+        $employeeData = EmployeeData::fromArray($data);
 
-        $user = User::create($data);
-        $user->employee()->create($data);
+        $action->handle($employeeData);
 
         return to_route('employee.index')->with('success', 'Berhasil tambah data karyawan');
     }
@@ -66,19 +66,12 @@ class EmployeeControlller extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(EmployeeRequest $request, Employee $employee)
+    public function update(EmployeeRequest $request, Employee $employee, UpdateEmployee $action)
     {
         $data = $request->validated();
-        foreach (['kesehatan', 'bencana', 'transportasi', 'jabatan', 'makanan'] as $key) {
-            $data[$key] = str_replace(['.', ','], '', $data[$key]);
-        }
+        $employeeData = EmployeeData::fromArray($data);
 
-        $employee->user()->update([
-            'name' => $data['name'],
-            'email' => $data['email'],
-        ]);
-
-        $employee->update($data);
+        $action->handle($employee, $employeeData);
 
         return to_route('employee.index')->with('success', 'Berhasil edit data karyawan');
     }
@@ -86,9 +79,9 @@ class EmployeeControlller extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Employee $employee)
+    public function destroy(Employee $employee, DeleteEmployee $action)
     {
-        $employee->user()->delete();
-        return to_route('employee.index')->with('deleted', 'Berhasil hapus data karyawan');
+        $action->handle($employee);
+        return to_route('employee.index')->with('success', 'Berhasil hapus data karyawan');
     }
 }
