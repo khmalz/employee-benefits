@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Notification\ReadNotification;
 use Illuminate\View\View;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
@@ -28,14 +29,13 @@ class NotificationController extends Controller
      * Read all or specified notification.
      *
      * @param Request $request The HTTP request object.
-     * @param string|null $id The ID of the notification to mark as read (optional).
-     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse The redirect response to the notification index page.
+     * @param ReadNotification $action The action to handle the notification read.
+     * @param string|null $id The ID of the notification to mark as read. Default is null.
+     * @return RedirectResponse The redirect response to the notification index page.
      */
-    public function read(Request $request, ?string $id = null): RedirectResponse
+    public function read(Request $request, ReadNotification $action, ?string $id = null): RedirectResponse
     {
-        $request->user()->unreadNotifications()->when($id, function ($query) use ($id) {
-            $query->find($id);
-        })->update(['read_at' => now()]);
+        $action->handle($request->user(), $id);
 
         return to_route('notification.index');
     }

@@ -17,15 +17,7 @@ class BenefitController extends Controller
         $status = $request->status ?? 'menunggu';
 
         $benefits = Benefit::with("employee.user:id,name")
-            ->when($status === "menunggu", function ($query) {
-                return $query->whereStatus(Benefit::MENUNGGU);
-            })
-            ->when($status === "proses", function ($query) {
-                return $query->whereStatus(Benefit::PROSES);
-            })
-            ->when($status === "ditolak", function ($query) {
-                return $query->whereStatus(Benefit::TOLAK);
-            })
+            ->status($status)
             ->when($request->has('nama') && !empty($request->nama), function ($query) use ($request) {
                 return $query->whereUserName($request->nama);
             })

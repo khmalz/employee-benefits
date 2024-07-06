@@ -18,18 +18,7 @@ class HistoryBenefitController extends Controller
 
         $benefits = Benefit::with("employee.user:id,name")
             ->whereEmployeeID($employeeUserID)
-            ->when($status === "menunggu", function ($query) {
-                return $query->whereStatus(Benefit::MENUNGGU);
-            })
-            ->when($status === "proses", function ($query) {
-                return $query->whereStatus(Benefit::PROSES);
-            })
-            ->when($status === "selesai", function ($query) {
-                return $query->whereStatus(Benefit::SELESAI);
-            })
-            ->when($status === "ditolak", function ($query) {
-                return $query->whereStatus(Benefit::TOLAK);
-            })
+            ->status($status)
             ->when($request->has('tanggal') && !empty($request->tanggal), function ($query) use ($request) {
                 $tanggal = Carbon::parse($request->tanggal)->format('Y-m-d');
                 return $query->whereDate('created_at', $tanggal);

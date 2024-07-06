@@ -56,6 +56,22 @@ class Benefit extends Model
         return $this->hasOne(Response::class, 'benefit_id');
     }
 
+    public function scopeStatus(Builder $query, string $status): Builder
+    {
+        $statuses = [
+            'menunggu' => self::MENUNGGU,
+            'proses' => self::PROSES,
+            'selesai' => self::SELESAI,
+            'ditolak' => self::TOLAK,
+        ];
+
+        if (array_key_exists($status, $statuses)) {
+            return $query->where('status', $statuses[$status]);
+        }
+
+        return $query;
+    }
+
     public function scopeWhereStatus(Builder $query, string $status)
     {
         return $query->where('status', $status);
