@@ -117,7 +117,7 @@
                     @csrf
 
                     <input name="employee_id" type="hidden" value="{{ auth()->user()->employee->id }}">
-                    <input id="employeeNIK" name="employeeNIK" type="hidden" value="{{ auth()->user()->employee->nik }}">
+                    <input id="employeeNIK" name="employee_nik" type="hidden" value="{{ auth()->user()->employee->nik }}">
 
                     <div class="mb-5">
                         <label class="mb-2 block text-sm font-medium text-gray-900" for="jenis_tunjangan">Jenis

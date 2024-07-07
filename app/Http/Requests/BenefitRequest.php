@@ -24,10 +24,11 @@ class BenefitRequest extends FormRequest
     {
         return [
             'employee_id' => ['required', 'numeric'],
+            'employee_nik' => ['required', 'string', 'max:20', 'alpha_dash'],
             'type' => ['required', 'string', Rule::in(['kesehatan', 'bencana', 'transportasi', 'jabatan', 'makanan'])],
             'amount' => ['required', 'string', 'max:30', 'regex:/^[\d.,]+$/'],
             'message' => ['required', 'string', 'max:100'],
-            'file' => ['required_without:benefit_id', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'file' => [Rule::requiredIf(is_null($this->benefit_id)), 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 }

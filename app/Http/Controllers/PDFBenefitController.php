@@ -22,7 +22,7 @@ class PDFBenefitController extends Controller
             }, function ($query) use ($request) {
                 $query->whereBetweenDate([$request->started_at, $request->ended_at]);
             })
-            ->oldest()->get();
+            ->latest()->get();
 
         if ($benefits->isEmpty()) {
             return back()->with('fail', 'Tunjangan Yang Ingin di Eksport Tidak Ada');

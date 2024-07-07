@@ -36,7 +36,7 @@
             @endrole
 
             @role('employee')
-                @if ($benefit->status == 'reject')
+                @if ($benefit->status == 'reject' || $benefit->status == 'pending')
                     <button
                         class="inline-flex items-center rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
                         id="dropdownDefaultButton" data-dropdown-toggle="dropdown" type="button">Aksi <svg

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Benefit\UpdateBenefit;
 use Carbon\Carbon;
 use App\Models\Benefit;
+use App\DTO\BenefitData;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use App\Http\Requests\BenefitRequest;
+use App\Actions\Benefit\CreateBenefit;
+use App\Actions\Benefit\DeleteBenefit;
 use Illuminate\Validation\ValidationException;
 
 class BenefitController extends Controller
@@ -28,8 +30,8 @@ class BenefitController extends Controller
             ->when($request->has('jenis') && !empty($request->jenis), function ($query) use ($request) {
                 return $query->whereType($request->jenis);
             })
-            ->oldest()
-            ->paginate(1);
+            ->latest()
+            ->paginate(10);
 
         return view("dashboard.benefit.list", compact('benefits'));
     }
@@ -48,93 +50,55 @@ class BenefitController extends Controller
             ->when($request->has('jenis') && !empty($request->jenis), function ($query) use ($request) {
                 return $query->whereType($request->jenis);
             })
-            ->oldest()
+            ->latest()
             ->paginate(10);
 
         return view("dashboard.benefit.done", compact('benefits'));
     }
 
-    public function store(BenefitRequest $request)
+    public function store(BenefitRequest $request, CreateBenefit $action)
     {
         $data = $request->validated();
+        $benefitData = BenefitData::fromArray($data);
 
-        $employeeBenefit = \App\Models\Employee::where('nik', $request->employeeNIK)->value($request->type);
+        try {
+            $action->handle($benefitData);
 
-        $data['amount'] = str_replace(['.', ','], '', $data['amount']);
-
-        if ($data['amount'] > $employeeBenefit) {
-            throw ValidationException::withMessages([
-                'amount' => 'Jumlah tunjangan melebihi batas yang diizinkan.',
-            ]);
+            return to_route('request')->with('success', 'Berhasil mengirim permintaan tunjangan');
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage())->withInput();
         }
-
-        if ($request->file('file')) {
-            $data['file'] = $request->file('file')->store('bukti');
-        }
-
-        Benefit::create($data);
-
-        return to_route('request')->with('success', 'Berhasil mengirim permintaan tunjangan');
     }
 
     public function show(Benefit $benefit)
     {
         $benefit->load(['employee.user', 'response']);
-
         $isBenefitExceededLimit = $benefit->amount > $benefit->employee->{$benefit->type};
 
         return view('dashboard.benefit.detail', compact('benefit', 'isBenefitExceededLimit'));
     }
 
-    public function update(BenefitRequest $request, Benefit $benefit)
+    public function update(BenefitRequest $request, Benefit $benefit, UpdateBenefit $action)
     {
         $data = $request->validated();
-        $amountException = false;
-
-        DB::beginTransaction();
+        $benefitData = BenefitData::fromArray($data);
 
         try {
-            $employeeBenefit = \App\Models\Employee::where('nik', $request->employeeNIK)->value($request->type);
-
-            $data['amount'] = str_replace(['.', ','], '', $data['amount']);
-
-            if ($data['amount'] > $employeeBenefit) {
-                $amountException = true;
-                throw new \Exception('Fake error to trigger catch block');
-            }
-
-            if ($request->hasFile('file')) {
-                File::delete(public_path("images/$benefit->file"));
-
-                $data['file'] = $request->file('file')->store('bukti');
-            }
-
-            $data['status'] = 'pending';
-
-            $benefit->update($data);
-
-            $benefit->response()->delete();
-
-            DB::commit();
+            $action->handle($benefit, $benefitData);
 
             return to_route('request')->with('success', 'Berhasil mengedit permintaan tunjangan');
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
-            DB::rollback();
-
-            if ($amountException) {
-                throw ValidationException::withMessages([
-                    'amount' => 'Jumlah tunjangan melebihi batas yang diizinkan.',
-                ]);
-            }
-
-            return back()->with('error', 'Failed to save changes: ' . $e->getMessage());
+            return back()->with('error', $e->getMessage())->withInput();
         }
     }
 
-    public function destroy(Benefit $benefit)
+    public function destroy(Benefit $benefit, DeleteBenefit $action)
     {
-        File::delete(public_path("images/$benefit->file"));
-        $benefit->delete();
+        $action->handle($benefit);
 
         return to_route("request")->with("success", "Berhasil menghapus permintaan tunjangan");
     }
